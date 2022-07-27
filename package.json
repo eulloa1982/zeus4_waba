@@ -1,16 +1,12 @@
 {
   "name": "api",
   "version": "0.0.0",
+  "private": true,
   "engines": {
     "node": "14.x"
   },
-  "private": true,
   "scripts": {
-    "start-client": "react-scripts start",
-    "build": "react-scripts build && (cd api && npm install)",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start": "cd api && npm start"
+    "start": "node ./api/bin/www"
   },
   "dependencies": {
     "axios": "^0.27.2",
