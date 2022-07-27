@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./api/bin/www",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "start-client": "react-scripts start",
+    "build": "react-scripts build && (cd api && npm install)",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start": "cd api && npm start"
   },
   "dependencies": {
     "axios": "^0.27.2",
