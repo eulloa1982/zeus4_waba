@@ -1,12 +1,12 @@
 const { nextTick } = require("process");
 const axios = require("axios");
 // Create and Save new Tutorials
-exports.sendMessage = async(from, to, message) => {
+exports.sendMessage = async(to, message) => {
     // Default options are marked with *
     dataSend = { "messaging_product": "whatsapp", "to": to, "type": "template", "template": { "name": "hello_world", "language": { "code": "en_US" } } };
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/${from}/messages`, 
+                url: `https://graph.facebook.com/v12.0/100698539410392/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -21,7 +21,6 @@ exports.sendMessage = async(from, to, message) => {
     })
     .then(data => {
         return (JSON.stringify(dataSend))
-    })
-    
+    })    
 };
 

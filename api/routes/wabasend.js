@@ -14,7 +14,7 @@ const asyncHandler = fn => (req, res, next) => {
 };
 
 //JWT Middleware
-router.use(expressJwt({
+/*router.use(expressJwt({
     secret: secretKey,
     algorithms: ['HS256'],
     exp: 188900,
@@ -29,7 +29,7 @@ router.use(expressJwt({
         }
         return null;    
     }
-}));
+}));*/
 
 /* initial path */
 router.get("/", function(req, res, next) {
@@ -43,14 +43,18 @@ send whatsapp message
 @message text message
 */
 router.post("/", asyncHandler(async function(req, res) {
-    
-    const { from, to, message } = req.body
-    let sendMessage = await waba.sendMessage(from, to, message)
+    const { to, message } = req.body
+    let sendMessage = await waba.sendMessage(to, message)
         .then(message => {
             res.status(200).send({
                 data: message
             })
-        });
+        })
+        .catch(err => {
+            res.status(400).send({
+                error: err
+            })
+        })
     
 }));
 

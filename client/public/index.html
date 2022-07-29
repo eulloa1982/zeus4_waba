@@ -28,7 +28,11 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <p>Something</p>
+    <div id="contact-data">
+      <div id="mobile"></div>
+      <div id="photo"></div>
+      <div id="fullname"></div>
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -42,26 +46,34 @@
     -->
 
     <script src="https://live.zwidgets.com/js-sdk/1.1/ZohoEmbededAppSDK.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   </body>
   
   <script>
-    ZOHO.embeddedApp.on("PageLoad",function(data)
-    {
-        
-        ZOHO.CRM.CONFIG.getCurrentUser().then(function(data){
+    function initial() {
+      window.myvar=17782902;
+      ZOHO.embeddedApp.on("PageLoad",function(data)
+      {
+        id = data.EntityId;
+
+        ZOHO.CRM.API.getRecord({Entity:"Contacts",RecordID:id})
+          .then(function(data){
             console.log(data)
-        })
-
+            window.myvar = data.data[0].Mobile
+              $("#fullname").text(data.data[0].Full_Name)
+              $("input[name=Mobile]").val(data.data[0]['Mobile'])
+              
+              return data.data[0].Mobile;
+          })
+          
+                  
         
-        ZOHO.CRM.API.getAllRecords({Entity: "Accounts", sort_order: "asc",per_page:3,page:1})
-            .then(function(response){
-                console.log(response)
-               
-            })
-    });
+      });
 
 
-    ZOHO.embeddedApp.init()
-
+      ZOHO.embeddedApp.init()
+    }
+    
   </script>
 </html>
