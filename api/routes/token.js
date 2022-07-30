@@ -15,4 +15,5 @@ router.get("/getToken", function(req, res) {
         res.json({"_token": token});
 })
 
+
 module.exports = router;

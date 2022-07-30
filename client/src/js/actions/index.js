@@ -1,44 +1,36 @@
 import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
+import { ERROR_IN, OWN_MESSAGE_IN } from '../constants';
 
 export function addOwnMessage(payload) {
     return dispatch => {
-        
+        const token = localStorage.getItem('jwtToken')
         const options = {
             method: `POST`,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer: ${token}`
               },
-            body: JSON.stringify({a: 7, str: 'Some string: &=&'})
+            body: JSON.stringify(payload)
+            
             };
-            console.log(options)
         return fetch("/wabaSend", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                console.log(typeof(response), response)
-                //dispatch({ type: 'OWN_MESSAGE_IN', payload: json });
-            
-                //this.setState({messageShow: true})
+                dispatch({ type: OWN_MESSAGE_IN, payload: payload });
                 if (!isEmpty(response.error)){
-                    console.log("error", response.error)
-                    dispatch({type: "ERROR_IN", payload: response.error.message});
-                    //this.setState({message: response.error, showStyle: 'danger'})
+                    dispatch({type: ERROR_IN, payload: response.error.message});
                 } else if (isObject(response.errors)){
-                    console.log("errorsssss", response.errors)
-                    return ({"error": JSON.stringify(response.errors)})
-                    
+                    dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
-                    //console.log("DD", dd)
-                    //let creador = {...response.data.data}
-                    dispatch({ type: 'OWN_MESSAGE_IN', payload: json });
-                    return({"error": "Operation success"})
+                    dispatch({ type: OWN_MESSAGE_IN, payload: payload });
                 }
                 
             })
             .catch(err => {
-                console.log('Error', err)
+                console.log('Error action', err)
             }) 
     }
 }

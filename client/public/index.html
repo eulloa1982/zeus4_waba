@@ -1,38 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp</title>
+    <link rel="icon" href="./images/favicon.ico" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="contact-data">
-      <div id="mobile"></div>
-      <div id="photo"></div>
-      <div id="fullname"></div>
-    </div>
+    <div class="grid">
+      <!-- App background -->
+      <div class="top"></div>
+      <div class="bottom"></div>
+      <!-- App -->
+      <div class="app">
+        <div class="sidebar">
+          <div class="sidebar-header">
+            <img src="images/me.jpg" />
+            <div class="sidebar-header-icons">
+              <img src="images/status.svg" />
+              <img src="images/message-icon.svg" />
+              <img src="images/menu-icon.svg" />
+            </div>
+          </div>
+          <div class="sidebar-notifications">
+            <img src="images/notifications.svg" />
+            <div class="sidebar-notifications-message">
+              <span>Get Notified of New Messages</span>
+              <a href="#"
+                >Turn on desktop notifications <img src="images/gt-arrow.svg"
+              /></a>
+            </div>
+          </div>
+          <div class="search-chat">
+            <div class="search-bar">
+              <img src="images/search-icon.svg" />
+              <input type="text" placeholder="Search or start new chat" />
+            </div>
+          </div>
+          <div class="chats">
+            <!-- Alice -->
+            <div class="chat">
+              <div class="chat-left">
+                <img src="images/alice.jpg" />
+              </div>
+              <div class="chat-right">
+                <div class="chat-right-top">
+                  <span class="contact-name" id="fullname">Alice</span>
+                  <span class="chat-date">12:51</span>
+                </div>
+                <div class="chat-right-bottom">
+                  <div class="chat-right-bottom-left">
+                    <img
+                      class="double-check-mark"
+                      src="images/double-check-seen.svg"
+                    />
+                    <span class="chat-message-typing">Alice is typing...</span>
+                    
+                  </div>
+                  <div class="chat-right-bottom-right">
+                    <span class="unread-messages-number"> 3 </span>
+                    <span class="chat-options"
+                      ><img src="./images/down-arrow.svg"
+                    /></span>
+                  </div>
+                  
+                </div>
+                <span id="mobile">mobile</span>
+                <span id="title">title</span>
+                <span id="lead_source">lead</span>
+                <span id="created_time">time</span>
+              </div>
+            </div>
+           
+           
+          
+
+            
+
+            
+            
+            
+            <!-- Marsha Taylor -->
+            <div class="chat">
+              <div class="chat-left">
+                <img src="images/marsha-taylor.jpg" />
+              </div>
+              <div class="chat-right">
+                <div class="chat-right-top">
+                  <span class="contact-name">Marsha Taylor</span>
+                  <span class="chat-date">1/9/2020</span>
+                </div>
+                <div class="chat-right-bottom">
+                  <div class="chat-right-bottom-left">
+                    <img
+                      class="single-check-mark"
+                      src="images/single-check.svg"
+                    />
+                    <span class="chat-message">Are you there??? ðŸ¤”ðŸ¤”ðŸ¤”</span>
+                  </div>
+                  <div class="chat-right-bottom-right">
+                    <span class="chat-options"
+                      ><img src="./images/down-arrow.svg"
+                    /></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -47,7 +124,8 @@
 
     <script src="https://live.zwidgets.com/js-sdk/1.1/ZohoEmbededAppSDK.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    </div>
+    </div>
   </body>
   
   <script>
@@ -59,9 +137,13 @@
 
         ZOHO.CRM.API.getRecord({Entity:"Contacts",RecordID:id})
           .then(function(data){
-            console.log(data)
+            console.log(data.data[0].Lead_Source)
             window.myvar = data.data[0].Mobile
               $("#fullname").text(data.data[0].Full_Name)
+              $("#lead_source").text(data.data[0].Lead_Source)
+              $("#title").text(data.data[0].Title)
+              $("#created_time").text(data.data[0].Created_Time)
+              $("#mobile").text(data.data[0].Mobile)
               $("input[name=Mobile]").val(data.data[0]['Mobile'])
               
               return data.data[0].Mobile;

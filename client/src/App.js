@@ -1,15 +1,19 @@
 import './App.css';
+import React,{useState} from 'react'
 import BoardComponent from './components/Board/Board';
-import ZohoComponent from './components/Zoho/Zoho';
+import ErrorComponent from './components/Error/Error';
+import Login from './components/Login';
 
-function App( { posts }) {
-  return (
-    <div className="App">
-      
-      <BoardComponent />
-      <ZohoComponent />
-    </div>
+const App = ()=> {
+  const [user, setUser] = useState({ auth:false, name:''})
+   return (
+     <div className="App">
+        { user.auth?
+            <div><BoardComponent /><ErrorComponent/></div>
+          :
+            <Login setUser={setUser}/>
+        }
+     </div>
   );
 }
-
 export default App;

@@ -6,7 +6,7 @@ const mapStateToProps = state => {
   return { errors_in: state.errors_in }
 }
 
-export class ZohoComponent extends React.Component {
+export class ErrorComponent extends React.Component {
   render () {
     return (
       <ul>
@@ -18,7 +18,7 @@ export class ZohoComponent extends React.Component {
   }
 };
 
-const connected = connect(mapStateToProps)(ZohoComponent);
+const connected = connect(mapStateToProps)(ErrorComponent);
 export default connected;
 /*{this.props.errors_in.map(post => (
           <li key={post.error}>Sending {post.error}</li>

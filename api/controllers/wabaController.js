@@ -21,6 +21,7 @@ exports.sendMessage = async(to, message) => {
     })
     .then(data => {
         return (JSON.stringify(dataSend))
-    })    
+    })
+    
 };
 

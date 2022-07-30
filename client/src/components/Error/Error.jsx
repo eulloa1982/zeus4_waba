@@ -1,4 +1,4 @@
-import "./Zoho.css";
+import "./Error.css";
 import React from "react";
 
 function template() {
