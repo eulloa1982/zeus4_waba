@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { expressjwt: jwt } = require("express-jwt");
-const jwttoken = require('jsonwebtoken');
+var methodOverride = require('method-override');
 
 
 var indexRouter = require('./routes/index');
@@ -49,11 +49,9 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  //res.send({data: 'error in waba'})
-  res.render('error');
+  // send back an easily understandable error message to the caller
+  res.status(500).send(err.response.data)
+  //res.render('error');
 });
 
 module.exports = app;

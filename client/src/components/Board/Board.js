@@ -2,6 +2,8 @@ import React    from "react";
 import { connect } from 'react-redux'
 import { addOwnMessage } from '../../js/actions/index'
 import "./Board.css";
+import { isEmpty } from 'lodash';
+
 //import { useSelector, useDispatch } from 'react-redux'
 //import {OWN_MESSAGE_IN} from '../../js/reducers/index'
 
@@ -22,10 +24,10 @@ class BoardComponent extends React.Component {
     this.handleMessage = this.handleMessage.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.mobile = '';
+    this.fullname = window.fullname
   }
 
   handleMessage(event) {
-    
     this.setState({ message: event.target.value })
   }
 
@@ -33,24 +35,19 @@ class BoardComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     if (this.state.message !== '') {
-      
       this.props.addOwnMessage({ mobile: window.myvar, message: this.state.message });
-      
     }
-
-    
   }
 
   render() {
     return(
-      <div>
         <div class="main">
           <div class="chat-window-header">
             <div class="chat-window-header-left">
-              <img class="chat-window-contact-image"src="./images/timmy-m-harley.jpg" alt="attach"/>
+              <img class="chat-window-contact-image" src="./images/no-user.jpg" alt="attach"/>
               <div class="contact-name-and-status-container">
-              <span class="chat-window-contact-name">Timmy M Harley</span>
-              <span class="chat-window-contact-status">Online</span>
+              <span class="chat-window-contact-name"></span>
+              <span class="chat-window-contact-status">To get</span>
               </div>
             </div>
             <div class="chat-window-header-right">
@@ -60,18 +57,63 @@ class BoardComponent extends React.Component {
           </div>
           <div class="chat-window">
             
-            <div class="sender">
-              <span class="sender-message-tail"><img src="./images/message-tail-sender.svg" alt="attach"/></span>
-              <span class="sender-message">Hey! How's it going??</span>
-              <span class="message-time">21:32</span>
-              <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
+            
+            
+            {this.props.messages_in.map(post => (
+                <div class="sender">
+                  <span class="sender-message">{post.message} </span>
+                  <span class="message-time">21:32</span>
+                  {isEmpty(post.error) ? 
+                    (
+                      <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
+                    ) 
+                    : 
+                    (
+                      <span class="message-status"><img src="./images/status.svg" alt="attach" /></span>
+                    )}
+                </div>
+            ))}
+          </div>
+          
+          <div class="type-message-bar">
+            <div class="type-message-bar-left">
+              <img src="images/icons.svg" alt="icon"/>
+              <img src="images/attach-icon.svg" alt="attach" />
             </div>
-            <div class="receiver">
-              <span class="receiver-message-tail"><img src="./images/message-tail-receiver.svg" alt="attach"/></span>
-              <span class="receiver-message">I'm doing fine! What about you??</span>
-              <span class="message-time">21:35</span>
+            <div class="type-message-bar-center">
+              <input
+                type="text"
+                name=""
+                id="comment"
+                placeholder="Send a message"
+                value={this.state.message}
+                onChange={this.handleMessage}
+              />
             </div>
-            <div class="sender">
+            <div class="type-message-bar-right">
+              <img src="images/whatsapp-send-1.png" alt="Send" onClick={this.handleSubmit}/>
+            </div>
+            <input
+              type="text"
+              name="Mobile"
+              value={window.myvar}
+              placeholder="Mobile"
+            />
+          </div>
+        </div>
+      )
+    } 
+}
+
+const connected = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
+export default connected;
+
+  /*{this.props.messages_in.map(post => (
+            <li key={post.mobile}>Sending {post.message} To: {post.mobile}</li>
+          ))}
+          
+          
+          <div class="sender">
               <span class="sender-message-tail"><img src="images/message-tail-sender.svg" alt="attach"/></span>
               <span class="sender-message">I'm good, but I'm sooo bored ðŸ¥±ðŸ¥±ðŸ¥±</span>
               <span class="message-time">21:35</span>
@@ -84,16 +126,8 @@ class BoardComponent extends React.Component {
               <span class="receiver-message">Check this out...</span>
               <span class="message-time">21:36</span>
             </div>
-            <div class="receiver">
-              <span class="receiver-message">ðŸ˜ðŸ˜ðŸ˜</span>
-              <span class="message-time">21:36</span>
-            </div>
             <div class="receiver image-message">
               <span class="receiver-message"><img src="./images/meme-coding.png" alt="attach"/></span>
-              <span class="message-time">21:36</span>
-            </div>
-            <div class="receiver image-message">
-              <span class="receiver-message"><img src="./images/meme-khaleesi.jpg" alt="attach"/></span>
               <span class="message-time">21:36</span>
             </div>
             <div class="receiver receiver-audio-message">
@@ -125,88 +159,8 @@ class BoardComponent extends React.Component {
               <span class="message-time">21:39</span>
               <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
             </div>
-            <div class="sender">
-              <span class="sender-message">ðŸ¤£ðŸ¤£ðŸ¤£ðŸ¤£</span>
-              <span class="message-time">21:39</span>
-              <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
-            </div>
-
-            {this.props.messages_in.map(post => (
-                <div class="sender">
-                  <span class="sender-message">{post.message} </span>
-                  <span class="message-time">21:32</span>
-                  <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
-                </div>
-            ))}
-          </div>
           
-          <div class="type-message-bar">
-            <div class="type-message-bar-left">
-              <img src="images/icons.svg" alt="icon"/>
-              <img src="images/attach-icon.svg" alt="attach" />
-            </div>
-            <div class="type-message-bar-center">
-            <input
-                        type="text"
-                        name=""
-                        id="comment"
-                        placeholder="Digite uma menssagem"
-                        value={this.state.message}
-                        onChange={this.handleMessage}
-                      />
-            </div>
-            <div class="type-message-bar-right">
-              <img src="images/audio-icon.svg" />
-            </div>
-          </div>
           
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-     
-        <input
-            type="text"
-            name="Mobile"
-            value={window.myvar}
-            placeholder="Mobile"
-        />
-        
-        
-        <button
-          aria-label="Send Message"
-          onClick={this.handleSubmit}
-        >
-          Send WhatsApp
-        </button>
-        
-        
-      </div>
-    )
-  } 
-}
-
-  
-  
-  const connected = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
-  export default connected;
-
-  /*{this.props.messages_in.map(post => (
-            <li key={post.mobile}>Sending {post.message} To: {post.mobile}</li>
-          ))}*/
+          
+          
+          */

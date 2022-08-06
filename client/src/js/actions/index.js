@@ -2,7 +2,7 @@ import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
 import { ERROR_IN, OWN_MESSAGE_IN } from '../constants';
 
-export function addOwnMessage(payload) {
+export function addOwnMessage(payloadSend) {
     return dispatch => {
         const token = localStorage.getItem('jwtToken')
         const options = {
@@ -12,34 +12,30 @@ export function addOwnMessage(payload) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer: ${token}`
               },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payloadSend)
             
             };
         return fetch("/wabaSend", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                dispatch({ type: OWN_MESSAGE_IN, payload: payload });
+                console.log('message from node', response)
                 if (!isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
+                    payloadSend.error = response.error.message;
+                    dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
-                    dispatch({ type: OWN_MESSAGE_IN, payload: payload });
+                    dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
                 }
                 
             })
             .catch(err => {
+                dispatch({type: ERROR_IN, payload: 'Unknown error'});
                 console.log('Error action', err)
-            }) 
+            })
     }
 }
 
 
-export function badUrl() {
-    return {type: "BAD_URL"};
-}
-
-export function error() {
-    return {type: "ERROR_IN"}
-}

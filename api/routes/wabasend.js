@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
 
 
-const passwordHash = '$2b$10$L9nYrE48INGkPkdPPE3ABOXx.CXTCTKJadW3Cu35iirZHZAHHBzCi'
+const passwordHash = '$2b$10$ET29p5cc4nAGsfVkPNrFQ.4ZhyUAQitnKGRkoXdqWmpQsUlJnsJXu'
 const privateKey= 'mykey'
 const username = 'myuser'
 
@@ -21,17 +21,33 @@ const asyncHandler = fn => (req, res, next) => {
 
 /* initial path */
 router.post("/login", asyncHandler(async function(req, res) {
-    const { name, password } = req.body;
+    const { password } = req.body;
     try{
+        /** One way, can't decrypt but can compare */
+        var salt = bcrypt.genSaltSync(10);
+
+        /** Encrypt password */
+        bcrypt.hash('E@Js#07Do=U$', salt, (err, res) => {
+            hash = res
+        });
+
+
         token = null
-        if(name && password) {
+        if(password) {
           let match  = await bcrypt.compare(password,passwordHash)
-          if(name===username && match)
-            token = await jwt.sign({ username:username }, privateKey,{ expiresIn: '1h'})
+          if (match)
+            token = await jwt.sign({ password }, privateKey,{ expiresIn: '1h'})
         }
-        if(token)
-          return res.json({token:token, username:username})
-        return res.sendStatus(401)
+
+        if(token) {
+            return res.json({token:token})
+        }
+        else {
+            console.log("Unan access")
+            return res.status(401).send(
+                {error: "Unauthorized access"}
+            )
+        }
        } 
        catch(err) {
         console.log(err)
@@ -57,16 +73,11 @@ send whatsapp message
 */
 router.post("/", asyncHandler(async function(req, res) {
     const { to, message } = req.body
-    console.log('Proccess',process.env.password);
     let sendMessage = await waba.sendMessage(to, message)
         .then(message => {
+            console.log('From route', message)
             res.status(200).send({
                 data: message
-            })
-        })
-        .catch(error => {
-            res.status(400).send({
-                error: error
             })
         })
 }));

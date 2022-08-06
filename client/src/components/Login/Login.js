@@ -1,39 +1,58 @@
-import React, {useState} from 'react'
+import React from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { errorsIn } from '../../js/actions/errors'
 
-const Login = ({setUser})=>{
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState('')
-  
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setErrors('')
-    axios.post('/wabaSend/login', {name:username,password:password})
+
+function mapDispatchToProps(dispatch) {
+  return {
+    error: message => dispatch(errorsIn(message))
+  };
+}
+
+
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        myKey: 'E@Js#07Do=U$'
+        
+    }
+  }
+  componentDidMount() {
+    
+    this.handleSubmit()
+  }
+
+ 
+  handleSubmit(e) {
+    //e.preventDefault()
+    axios.post('/wabaSend/login', {password: this.state.myKey})
     .then(res=> {
        localStorage.setItem('jwtToken', res.data.token)
        axios.defaults.headers.common['Authorization'] =  'Bearer'+res.data.token
-       setUser({ auth:true, name: res.data.username })
     })
     .catch(err=>{
-       if(err.response){
-         if(err.response.status===401) setErrors('Invalid credentials')
-         else setErrors('Please try again.')
-    }
-       console.log(err)
+      localStorage.removeItem('jwtToken')
+      if (err.response.status === 401) {
+        let message = "Error validating your credentials"
+        this.props.error(message);
+      }
+      else {
+        this.props.error(err.response.statusText);
+      }
+
     })
   }
  
+  render(){
   return (
     <form>
-      <input type='text' name='username' placeholder='username'
-        onChange = {e=> setUsername(e.target.value)}/>
-      <input type='password' name='pass' placeholder='password'
-        onChange = {e=> setPassword(e.target.value)}/>
-      <button type='submit' onClick= {e=> handleSubmit(e)}>Submit</button>
-      <p>{errors}</p>
+      
     </form>
   )
+  }
 }
 
-export default Login
+const connected = connect(null, mapDispatchToProps)(Login);
+export default connected

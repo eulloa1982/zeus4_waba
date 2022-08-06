@@ -235,6 +235,7 @@ a {
   background: var(--white);
   padding: 1rem 0 0 2rem;
   cursor: pointer;
+ 
 }
 
 .chat:hover {

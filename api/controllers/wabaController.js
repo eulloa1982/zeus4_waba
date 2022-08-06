@@ -15,9 +15,7 @@ exports.sendMessage = async(to, message) => {
                     Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
-    //redirect: 'follow', // manual, *follow, error
-    //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                data: JSON.stringify(dataSend) // body data type must match "Content-Type" header
+                data: JSON.stringify(dataSend)
     })
     .then(data => {
         return (JSON.stringify(dataSend))
