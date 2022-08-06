@@ -1,10 +1,9 @@
-import { isObject } from 'lodash';
-import { isEmpty } from 'lodash';
+import { ERROR_IN } from '../constants/index';
 
 export function errorsIn(payload) {
     
     return dispatch => {
-        dispatch({ type: 'ERROR_IN', payload: payload });
+        dispatch({ type: ERROR_IN, payload: payload });
         
     }
 }

@@ -1,4 +1,4 @@
-import { OWN_MESSAGE_IN } from "../constants/index";
+import { OWN_MESSAGE_IN, ERROR_IN } from "../constants/index";
 
 const initialState = {
   articles: [],
@@ -15,7 +15,7 @@ function rootReducer(state = initialState, action) {
       });
     }
 
-    case "ERROR_IN": {
+    case ERROR_IN: {
       return Object.assign({}, state, {
         errors_in: state.errors_in.concat(action.payload)
       });
