@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { expressjwt: jwt } = require("express-jwt");
-var methodOverride = require('method-override');
 
 
 var indexRouter = require('./routes/index');
