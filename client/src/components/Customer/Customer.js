@@ -14,7 +14,7 @@ const mapStateToProps = state => {
 
 class CustomerComponent extends React.Component {
   constructor() {
-    window['initial']();
+    //window['initial']();
     super()
     this.state = { message: '', mobileTo: '' }
     this.handleMessage = this.handleMessage.bind(this)
