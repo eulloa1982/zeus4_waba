@@ -1,4 +1,4 @@
-import React    from "react";
+import React from "react";
 import { connect } from 'react-redux'
 import { addOwnMessage } from '../../js/actions/index'
 import "./Board.css";
@@ -18,7 +18,7 @@ const mapStateToProps = state => {
 
 class BoardComponent extends React.Component {
   constructor() {
-    window['initial']();
+    //window['initial']();
     super()
     this.state = { message: '', mobileTo: '' }
     this.handleMessage = this.handleMessage.bind(this)
@@ -34,6 +34,11 @@ class BoardComponent extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
+    if (isEmpty(window.myvar)) {
+      alert('You need to configure a mobile number for this user')
+      throw new Error("No mobile configure")
+    }
+      
     if (this.state.message !== '') {
       this.props.addOwnMessage({ mobile: window.myvar, message: this.state.message });
     }
@@ -41,13 +46,63 @@ class BoardComponent extends React.Component {
 
   render() {
     return(
-        <div class="main">
+      <div id='columna2' class="main">
+          
+          
+          <div class="chat-window">
+            
+            <div class="receiver">
+              <span class="receiver-message">Testing message received</span>
+              <span class="message-time">21:36</span>
+            </div>
+            
+            {this.props.messages_in.map(post => (
+                <div class="sender">
+                  <span class="sender-message">{post.message} </span>
+                  <span class="message-time">21:32</span>
+                  {isEmpty(post.error) ? 
+                    (
+                      <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
+                    ) 
+                    : 
+                    (
+                      <span class="message-status"><img src="./images/status.svg" alt="attach" /></span>
+                    )}
+                </div>
+            ))}
+          </div>
+          
+          <div>
+            
+            <div class="type-message-bar-center">
+              <input
+                type="text"
+                name=""
+                id="comment"
+                placeholder="Send a message"
+                value={this.state.message}
+                onChange={this.handleMessage}
+              />
+            </div>
+            <div class="type-message-bar-right">
+              <img src="images/whatsapp-send-1.png" alt="Send" onClick={this.handleSubmit}/>
+            </div>
+            
+          </div>
+      </div>
+      )
+    } 
+}
+
+const connected = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
+export default connected;
+
+  /*
+  <div class="main">
           <div class="chat-window-header">
             <div class="chat-window-header-left">
-              <img class="chat-window-contact-image" src="./images/no-user.jpg" alt="attach"/>
               <div class="contact-name-and-status-container">
               <span class="chat-window-contact-name"></span>
-              <span class="chat-window-contact-status">To get</span>
               </div>
             </div>
             <div class="chat-window-header-right">
@@ -93,22 +148,40 @@ class BoardComponent extends React.Component {
             <div class="type-message-bar-right">
               <img src="images/whatsapp-send-1.png" alt="Send" onClick={this.handleSubmit}/>
             </div>
-            <input
-              type="text"
-              name="Mobile"
-              value={window.myvar}
-              placeholder="Mobile"
-            />
+            
           </div>
         </div>
-      )
-    } 
-}
-
-const connected = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
-export default connected;
-
-  /*{this.props.messages_in.map(post => (
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  {this.props.messages_in.map(post => (
             <li key={post.mobile}>Sending {post.message} To: {post.mobile}</li>
           ))}
           

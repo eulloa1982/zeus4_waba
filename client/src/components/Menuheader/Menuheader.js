@@ -1,22 +1,36 @@
-import { map } from 'lodash';
+import { map, isEmpty } from 'lodash';
 import React from 'react';
 import './Menuheader.css';
 
 const Menuheader = (props) => (
-  <div class="sidebar-header">
-    <img src="images/me.jpg" />
+  <div id="left-column">
+    <div class="sidebar-notifications">
+      <img src="images/notifications.svg" alt="Default img"/>
+        <div class="sidebar-notifications-message">
+          <span>Zeus4 WABA</span>
+        </div>
+    </div>
+       
+    <div class="sidebar-header">
+      <img src="./images/no-user.jpg" alt="attach"/>
+      <span class="contact-data">{props.usrAll.Full_Name}</span>
       <div class="sidebar-header-icons">
-        <h3>Mobile</h3><p class="contact-data">{props.usrAll.Mobile}</p><br />
-        <h3>Title</h3><p class="contact-data">{props.usrAll.Title}</p><br />
-        <h3>Lead Source</h3><span class="contact-data">{props.usrAll.Lead_Source}</span>
-        <h3>Created Time</h3><span class="contact-data">{props.usrAll.Created_Time}</span>
-              
-        
-        <img src="../../../public/images/status.svg" />
-        <img src="../../../public/images/message-icon.svg" />
-         <img src="../../../public/images/menu-icon.svg" />
-       </div>
+        <img src="images/status.svg" alt="Default img" />
+        <img src="images/message-icon.svg" alt="Default img" />
+        <img src="images/menu-icon.svg" alt="Default img"  />
+      </div>
+    </div>
+    
+    <div className='contact-data'>
+      <span><strong>Account Name: </strong></span><span class="contact-data">{!isEmpty(props.usrAll.Account_Name) ? props.usrAll.Account_Name.name : 'No account associated'}</span><br />
+      <span><strong>Mobile: </strong></span><span class="contact-data">{props.usrAll.Mobile}</span><br />
+      <span><strong>Title: </strong></span><span class="contact-data">{props.usrAll.Title}</span><br />
+      <span><strong>Lead Source: </strong></span><span class="contact-data">{props.usrAll.Lead_Source}</span><br />
+      <span><strong>Created Time: </strong></span><span class="contact-data">{props.usrAll.Created_Time}</span>
+
+    </div>
   </div>
+   
 );
 
 Menuheader.propTypes = {};

@@ -7,9 +7,9 @@ import Menuheader from '../Menuheader/Menuheader'
 
   console.log("INITIALIZING")
 
-    const [zohoContactId, setContactId] = React.useState('');
-    const [usrEmail, setUsrEmail] = React.useState('');
-    const [usrMobile, setUsrMobile] = React.useState('');
+    //const [zohoContactId, setContactId] = React.useState('');
+    //const [usrEmail, setUsrEmail] = React.useState('');
+    //const [usrMobile, setUsrMobile] = React.useState('');
     const [userAll, setUsr] = React.useState('');
 
     const [isLoaded, setIsLoaded] = React.useState(false);
@@ -30,18 +30,18 @@ import Menuheader from '../Menuheader/Menuheader'
     
             // Set data we want from CRM into props
             ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
-            .then((data) => { 
-              console.log(data)
+              .then((data) => { 
+                console.log(data)
+        
+                //setContactId(data.data[0].id)
+                //setUsrEmail(data.data[0]['Email'])
+                //setUsrMobile(data.data[0]['Mobile'])
+                window.myvar = data.data[0]['Mobile']
+                setUsr(data.data[0]);
+                
+                setIsLoaded(true);
       
-              setContactId(data.data[0].id)
-              setUsrEmail(data.data[0]['Email'])
-              setUsrMobile(data.data[0]['Mobile'])
-              window.myvar = data.data[0]['Mobile']
-              setUsr(data.data[0]);
-              
-              setIsLoaded(true);
-    
-            }).catch((e) => console.log(e))
+              }).catch((e) => console.log(e))
     
           })
           
@@ -83,11 +83,7 @@ import Menuheader from '../Menuheader/Menuheader'
 
   return (
     <div>
-        <div className="App">
-        <div>
             {ContentLoader()}
-        </div>
-        </div>
     </div>
   );
 }
