@@ -1,51 +1,55 @@
 import React, { useEffect } from 'react';
 import { ZOHO } from '../../vendor/ZSDK';
-import Menuheader from '../Menuheader/Menuheader'
+import Menuheader from '../Menuheader/Menuheader';
+import LoadToMsgs from '../LoadToMsgs/LoadToMsgs';
+import LoadFromMsgs from '../LoadFromMsgs/LoadFromMsgs'
+import { filter } from 'lodash';
+import './Zoho.css';
 
+function App() {
 
- function App() {
+  const [userAll, setUsr] = React.useState('');
+  const [messagesToPrev, getMessagesTo] = React.useState('');
+  const [messagesFromPrev, getMessagesFrom] = React.useState('');
 
-  console.log("INITIALIZING")
-
-    //const [zohoContactId, setContactId] = React.useState('');
-    //const [usrEmail, setUsrEmail] = React.useState('');
-    //const [usrMobile, setUsrMobile] = React.useState('');
-    const [userAll, setUsr] = React.useState('');
-
-    const [isLoaded, setIsLoaded] = React.useState(false);
-    const [error, setError] = React.useState(null);
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   useEffect(() => {
     async function init() {
-      console.log("BEFORE PAGELOAD");
       try{
 
         await ZOHO.embeddedApp.on("PageLoad",function(data) {
-          
-            //console.log("PageLoad", data);
+          //Custom Bussiness logic goes here
+          let entity = data.Entity;
+          let recordID = data.EntityId;
     
-            //Custom Bussiness logic goes here
-            let entity = data.Entity;
-            let recordID = data.EntityId;
-    
-            // Set data we want from CRM into props
-            ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
-              .then((data) => { 
-                console.log(data)
-        
-                //setContactId(data.data[0].id)
-                //setUsrEmail(data.data[0]['Email'])
-                //setUsrMobile(data.data[0]['Mobile'])
-                window.myvar = data.data[0]['Mobile']
-                setUsr(data.data[0]);
-                
-                setIsLoaded(true);
-      
-              }).catch((e) => console.log(e))
+          // Set data we want from CRM into props
+          ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
+            .then((data) => { 
+
+              window.myvar = data.data[0]['Mobile']
+              setUsr(data.data[0]);
+              
+            })
+            .then(() => {
+              //select pre messages
+              ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
+                .then((dataMessage => {
+                  //Separar los mensajes To y From, para agregarlos al store correctamente
+                  let messagesTo = filter(dataMessage.data, {'zeus4waba__Whatsapp_To': `${recordID}`})
+                  let messagesFrom = filter(dataMessage.data, {'zeus4waba__Whatsapp_From': `${recordID}`})
+                  
+                  getMessagesTo(messagesTo)
+                  getMessagesFrom(messagesFrom)
+                  setIsLoaded(true);
+                }))
+            })
+            
+            .catch((e) => console.log(e))
     
           })
           
-          console.log("AFTER PAGELOAD");
           return await ZOHO.embeddedApp.init();
 
       }catch(e){
@@ -55,36 +59,40 @@ import Menuheader from '../Menuheader/Menuheader'
     }
     init();
 
-  }, [])
+}, [])
 
-  const ContentLoader = () =>{
-    // handle rendering conditionally based on AJAX response
-    if (error) {
-        // API Data Error State: render the error state
+const ContentLoader = () =>{
+  // handle rendering conditionally based on AJAX response
+  if (error) {
+      // API Data Error State: render the error state
     return (
         <div>Error</div>
     )
 
-    } else if (!isLoaded) {
-        // API Data Not Loaded: render the loading progress spinner
+  } else if (!isLoaded) {
+    // API Data Not Loaded: render the loading progress spinner
     return (
-        <div align="center">
-        <div variant="h2"> Loading data....</div>
+        <div className='contenedor'>
+        <div className='contenido'> Loading CRM data....</div>
     </div>
     )
-    } else {
-        // API Data Loaded Succesfully: 
-        // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
-        return (
-            <Menuheader usrAll={userAll} />
-        )
-    }
+  } else {
+    // API Data Loaded Succesfully: 
+    // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
+    return (
+        <div>
+          <Menuheader usrAll={userAll} />
+          <LoadToMsgs msgTo={messagesToPrev}/>
+          <LoadFromMsgs msgFrom={messagesFromPrev} />
+        </div>
+      )
+  }
 }
 
-  return (
-    <div>
-            {ContentLoader()}
-    </div>
+return (
+  <div>
+    {ContentLoader()} 
+  </div>
   );
 }
 

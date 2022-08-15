@@ -1,10 +1,10 @@
-import "./Customer.css";
+import "./Zoholoadmsg.css";
 import React from "react";
 
 function template() {
   return (
     <div className="board">
-      <h1>Customer</h1>
+      <h1>Zoho tracert</h1>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
-import { ERROR_IN, OWN_MESSAGE_IN } from '../constants';
+import { ERROR_IN, OWN_MESSAGE_IN, FROM_PREV_MSG, TO_PREV_MSG } from '../constants';
 
 export function addOwnMessage(payloadSend) {
     return dispatch => {
@@ -38,4 +38,15 @@ export function addOwnMessage(payloadSend) {
     }
 }
 
+export function addPrevMessagesTo(payload) {
+    return dispatch => {
+        dispatch({ type: TO_PREV_MSG, payload: payload });
+    }
+}
 
+
+export function addPrevMessagesFrom(payload) {
+    return dispatch => {
+        dispatch({ type: FROM_PREV_MSG, payload: payload });
+    }
+}
