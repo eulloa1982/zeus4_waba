@@ -1,11 +1,12 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { addOwnMessage } from '../../js/actions/index'
 import "./Board.css";
 import { isEmpty } from 'lodash';
 import WriteToPrevMsgs from '../WriteToPrevMsgs/WriteToPrevMsgs';
 import WriteFromPrevMsgs from '../WriteFromPrevMsgs/WriteFromPrevMsgs';
 import WriteToLiveMsgs from '../WriteToLiveMsgs/WriteToLiveMsgs';
+import Error from '../Error/Error'
 
 
 function mapDispatchToProps(dispatch) {
@@ -42,7 +43,9 @@ class BoardComponent extends React.Component {
       
     if (this.state.message !== '') {
       this.props.addOwnMessage({ mobile: window.myvar, message: this.state.message });
-      this.state.message = '';
+      this.setState({
+        message: ''
+      });
     }
   }
 
@@ -50,10 +53,11 @@ class BoardComponent extends React.Component {
     return(
       <div id='columna2' class="main">
         <div class="chat-window">
-        
+          <Error />
           <WriteToPrevMsgs />
           <WriteFromPrevMsgs />
           <WriteToLiveMsgs />
+
           
         </div>
           

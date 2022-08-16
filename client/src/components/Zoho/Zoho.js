@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { ZOHO } from '../../vendor/ZSDK';
 import Menuheader from '../Menuheader/Menuheader';
 import LoadToMsgs from '../LoadToMsgs/LoadToMsgs';
-import LoadFromMsgs from '../LoadFromMsgs/LoadFromMsgs'
+import LoadFromMsgs from '../LoadFromMsgs/LoadFromMsgs';
+import WriteToZohoFromMsg from '../WriteToZohoFromMsg/WriteToZohoFromMsg';
 import { filter } from 'lodash';
 import './Zoho.css';
 
@@ -11,11 +12,13 @@ function App() {
   const [userAll, setUsr] = React.useState('');
   const [messagesToPrev, getMessagesTo] = React.useState('');
   const [messagesFromPrev, getMessagesFrom] = React.useState('');
+  const [userId, getUserId] = React.useState('');
 
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [error, setError] = React.useState(null);
-
+  
   useEffect(() => {
+    
     async function init() {
       try{
 
@@ -23,7 +26,7 @@ function App() {
           //Custom Bussiness logic goes here
           let entity = data.Entity;
           let recordID = data.EntityId;
-    
+          getUserId(recordID.toString())
           // Set data we want from CRM into props
           ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
             .then((data) => { 
@@ -73,10 +76,11 @@ const ContentLoader = () =>{
     // API Data Not Loaded: render the loading progress spinner
     return (
         <div className='contenedor'>
-        <div className='contenido'> Loading CRM data....</div>
+        <div className='contenido'> </div>
     </div>
     )
   } else {
+    //this.setParams();
     // API Data Loaded Succesfully: 
     // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
     return (
@@ -84,10 +88,12 @@ const ContentLoader = () =>{
           <Menuheader usrAll={userAll} />
           <LoadToMsgs msgTo={messagesToPrev}/>
           <LoadFromMsgs msgFrom={messagesFromPrev} />
+          <WriteToZohoFromMsg user={userId}/>
         </div>
       )
   }
 }
+
 
 return (
   <div>

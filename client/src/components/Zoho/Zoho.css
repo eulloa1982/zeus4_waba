@@ -1,6 +1,7 @@
 .contenedor 
 {
-position: relative;
+    position: relative;
+    height: 100%;
 
 }
  
@@ -8,13 +9,13 @@ position: relative;
 {
     position: absolute;
     right: 40%;
-    top: 240px;
+    top: 20px;
     width: 100%;
     z-index: 1000;
-    background-image: url('../../../public/images/Loading.gif');
+    background-image: url(../../../public/images/Loading.gif);
     background-repeat: no-repeat;
     background-position-y: center;
-    background-position-x: 0.5rem;
+    background-position-x: 10rem;
     font-size: large;
     padding: 1rem;
     flex: 1;

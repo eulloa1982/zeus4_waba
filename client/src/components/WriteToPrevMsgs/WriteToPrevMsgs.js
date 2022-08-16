@@ -13,6 +13,7 @@ class WriteToPrevMsgs extends React.Component {
     return (
         <div>       
           {this.props.to_prev_messages.map(post => (
+            (post.message !== null && post.message !== '') ? 
             <div class="receiver">
               <span class="receiver-message">{post.message} </span>
               <span class="message-time">{post.time}</span>
@@ -25,6 +26,10 @@ class WriteToPrevMsgs extends React.Component {
                   <span class="message-status"><img src="./images/status.svg" alt="attach" /></span>
                 )}
             </div>
+            
+            :
+
+            ''
           ))}
         </div>
     )
