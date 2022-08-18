@@ -19,9 +19,9 @@ const mapStateToProps = state => {
 }
 
 class BoardComponent extends React.Component {
-  constructor() {
+  constructor(props) {
     //window['initial']();
-    super()
+    super(props)
     this.state = { message: '', mobileTo: '' }
     this.handleMessage = this.handleMessage.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -36,13 +36,13 @@ class BoardComponent extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    if (isEmpty(window.myvar)) {
+    if (isEmpty(this.props.mobile)) {
       alert('You need to configure a mobile number for this user')
       throw new Error("No mobile configure")
     }
       
     if (this.state.message !== '') {
-      this.props.addOwnMessage({ mobile: window.myvar, message: this.state.message });
+      this.props.addOwnMessage({ mobile: this.props.mobile, message: this.state.message });
       this.setState({
         message: ''
       });

@@ -24,7 +24,7 @@ class WriteToLiveMsgs extends React.Component {
                 ) 
                 : 
                 (
-                  <span class="message-status"><img src="./images/status.svg" alt="attach" /></span>
+                  <span class="message-status"><img src="./images/error.png" alt="attach" /></span>
                 )}
             </div>
             ))}

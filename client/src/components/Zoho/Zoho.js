@@ -4,6 +4,7 @@ import Menuheader from '../Menuheader/Menuheader';
 import LoadToMsgs from '../LoadToMsgs/LoadToMsgs';
 import LoadFromMsgs from '../LoadFromMsgs/LoadFromMsgs';
 import WriteToZohoFromMsg from '../WriteToZohoFromMsg/WriteToZohoFromMsg';
+import Board from '../Board/Board';
 import { filter } from 'lodash';
 import './Zoho.css';
 
@@ -13,6 +14,9 @@ function App() {
   const [messagesToPrev, getMessagesTo] = React.useState('');
   const [messagesFromPrev, getMessagesFrom] = React.useState('');
   const [userId, getUserId] = React.useState('');
+  const [entity, getEntity] = React.useState('');
+  const [mobile, getMobile] = React.useState('');
+
 
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -26,12 +30,14 @@ function App() {
           //Custom Bussiness logic goes here
           let entity = data.Entity;
           let recordID = data.EntityId;
+          getEntity(entity);
           getUserId(recordID.toString())
           // Set data we want from CRM into props
           ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
             .then((data) => { 
-
-              window.myvar = data.data[0]['Mobile']
+              console.log("Data", data.data[0])
+              //window.myvar = data.data[0]['Mobile']
+              getMobile(data.data[0]['Mobile'])
               setUsr(data.data[0]);
               
             })
@@ -85,6 +91,7 @@ const ContentLoader = () =>{
     // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
     return (
         <div>
+          <Board mobile={mobile} entity={entity} />
           <Menuheader usrAll={userAll} />
           <LoadToMsgs msgTo={messagesToPrev}/>
           <LoadFromMsgs msgFrom={messagesFromPrev} />
