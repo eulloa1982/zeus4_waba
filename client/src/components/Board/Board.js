@@ -6,7 +6,9 @@ import { isEmpty } from 'lodash';
 import WriteToPrevMsgs from '../WriteToPrevMsgs/WriteToPrevMsgs';
 import WriteFromPrevMsgs from '../WriteFromPrevMsgs/WriteFromPrevMsgs';
 import WriteToLiveMsgs from '../WriteToLiveMsgs/WriteToLiveMsgs';
-import Error from '../Error/Error'
+import Error from '../Error/Error';
+import WTemplate from '../WTemplate/WTemplate';
+import WMediaTemplate from "../WMediaTemplate/WMediaTemplate";
 
 
 function mapDispatchToProps(dispatch) {
@@ -22,15 +24,37 @@ class BoardComponent extends React.Component {
   constructor(props) {
     //window['initial']();
     super(props)
-    this.state = { message: '', mobileTo: '' }
+    this.state = { message: '', 
+                    mobileTo: '',
+                    showTextTemplateForm: false,
+                    showMediaTemplateForm: false }
     this.handleMessage = this.handleMessage.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.mobile = '';
-    this.fullname = window.fullname
+    this.fullname = window.fullname;
   }
 
   handleMessage(event) {
     this.setState({ message: event.target.value })
+    this.setState({showTextTemplateForm: false})
+    let value = event.target.value;
+
+    switch (value) {
+      case '/tmptext':
+        this.setState({showTextTemplateForm: true});
+        break;
+      case '/tmpmedia':
+        this.setState({showMediaTemplateForm: true});
+        break;
+      default:
+        this.setState({
+                    showTextTemplateForm: false,
+                    showMediaTemplateForm: false
+                  });
+        break;
+    }
+
+    
   }
 
 
@@ -49,15 +73,20 @@ class BoardComponent extends React.Component {
     }
   }
 
+
+
   render() {
     return(
       <div id='columna2' class="main">
+        
         <div class="chat-window">
+          <WTemplate visible={this.state.showTextTemplateForm} />
+          <WMediaTemplate visible={this.state.showMediaTemplateForm} />
           <Error />
           <WriteToPrevMsgs />
           <WriteFromPrevMsgs />
           <WriteToLiveMsgs />
-
+          
           
         </div>
           

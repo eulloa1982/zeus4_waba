@@ -28,6 +28,9 @@ const Menuheader = (props) => (
 
           <p id="designation">Created Time : {props.usrAll.Created_Time}</p>
           <p id="designation">Last Activity Time : {props.usrAll.Last_Activity_Time}</p>
+        
+          <p>Type <code>/tmptext to add a WABA Text Template </code></p>
+          <p>Type <code>/tmpmedia to add a WABA Media Template </code></p>
         </div>
 
         <div id="info-cards">
@@ -45,9 +48,9 @@ const Menuheader = (props) => (
             <a href="#"><img src='./images/state-2.png' alt='mobile' />{props.usrAll.State}</a><br />
             <a href="#"><img src='./images/location-2.png' alt='mobile' />{props.usrAll.City}, {props.usrAll.Street}</a>
           </div>
-        
+          
         </div>
-
+        
 
     </div>
 

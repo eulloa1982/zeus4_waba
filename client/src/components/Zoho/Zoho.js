@@ -35,7 +35,6 @@ function App() {
           // Set data we want from CRM into props
           ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
             .then((data) => { 
-              console.log("Data", data.data[0])
               //window.myvar = data.data[0]['Mobile']
               getMobile(data.data[0]['Mobile'])
               setUsr(data.data[0]);

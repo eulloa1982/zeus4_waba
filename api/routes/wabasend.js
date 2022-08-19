@@ -73,15 +73,25 @@ send whatsapp message
 */
 router.post("/", asyncHandler(async function(req, res) {
     const { to, message } = req.body
-    let sendMessage = await waba.sendMessage(to, message)
+    let sendMessage = await waba.sendTemplateMessage(to, message)
         .then(message => {
-            console.log('From route', message)
             res.status(200).send({
                 data: message
             })
         })
 }));
 
+
+router.post("/textTemplate", asyncHandler(async function(req, res) {
+    const { template_name, language, category, template_text } = req.body
+    console.log('Body', req.body)
+    let sendMessage = await waba.sendTextTemplate(template_name, language, category, template_text)
+        .then(message => {
+            res.status(200).send({
+                data: message
+            })
+        })
+}));
 
 
 

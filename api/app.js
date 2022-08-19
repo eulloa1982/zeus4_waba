@@ -7,9 +7,10 @@ var { expressjwt: jwt } = require("express-jwt");
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 var wabaRouter = require("./routes/wabasend");
-var tokenRouter = require("./routes/token");
+var wabaTemplate = require("./routes/wabaTemplate")
+//var tokenRouter = require("./routes/token");
 
 
 var app = express();
@@ -28,9 +29,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use('/users', usersRouter);
 app.use("/wabasend", wabaRouter);
-app.use("/token", tokenRouter);
+app.use("/wabatemplate", wabaTemplate);
+//app.use("/token", tokenRouter);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
@@ -48,6 +50,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  console.log('error', res.locals)
   // send back an easily understandable error message to the caller
   res.status(500).send(err.response.data)
   //res.render('error');

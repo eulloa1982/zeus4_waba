@@ -1,0 +1,25 @@
+.superior 
+{
+position: relative;
+background-color: black;
+
+}
+ 
+#contenedor
+{
+    position: absolute;
+    right: 10%;
+    top: 240px;
+    width: 500px;
+    z-index: 1000;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 0.5rem;
+    background-color: #fbf5f3;
+    font-size: large;
+    padding: 1rem;
+    flex: 1;
+    border-radius: 0.6rem;
+    font-family: "Segoe UI";
+    
+}

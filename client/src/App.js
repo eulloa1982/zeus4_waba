@@ -1,6 +1,6 @@
 import './App.css';
 import Login from './components/Login';
-import ZohoApp from './components/Zoho/Zoho'
+import ZohoApp from './components/Zoho/Zoho';
 
 const App = ()=> {
      
