@@ -7,13 +7,9 @@ var { expressjwt: jwt } = require("express-jwt");
 
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
 var wabaRouter = require("./routes/wabasend");
 var wabaTemplate = require("./routes/wabatemplate")
 var wabaMessage = require("./routes/wabaMessage")
-
-//var tokenRouter = require("./routes/token");
-
 
 var app = express();
 
