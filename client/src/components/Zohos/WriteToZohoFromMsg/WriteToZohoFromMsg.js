@@ -1,5 +1,5 @@
 import React from 'react';
-import { ZOHO } from '../../vendor/ZSDK';
+import { ZOHO } from '../../../vendor/ZSDK';
 import { connect } from 'react-redux';
 import { last } from 'lodash';
 

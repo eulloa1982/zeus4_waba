@@ -37,19 +37,17 @@ class WTemplateBoard extends React.Component {
   render() {
     return (
       <div>
-      {this.props.visible ? 
-        <div class="superior-text animate__animated animate__bounceInRight">
-            <h3>Template Board</h3>
-            <div>
-              <WriteWTemplates handler={this.handler} templates={this.rr}/>
+        {this.props.visible ? 
+          <div class="superior-text animate__animated animate__bounceInRight">
+              <h3>Template Board</h3>
+              <div>
+                <WriteWTemplates handler={this.handler} templates={this.rr}/>
 
-            </div>
-        </div>
-
-      :
-
-      <div></div>
-      }
+              </div>
+          </div>
+        :
+        <div></div>
+        }
       </div>
 
 

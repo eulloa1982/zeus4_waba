@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addPrevMessagesTo } from '../../js/actions/index'
+import { addPrevMessagesTo } from '../../../js/actions/index'
 import { orderBy } from 'lodash';
 import React from 'react';
 

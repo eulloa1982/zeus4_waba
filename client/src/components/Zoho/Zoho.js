@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { ZOHO } from '../../vendor/ZSDK';
 import Menuheader from '../Menuheader/Menuheader';
-import LoadToMsgs from '../LoadToMsgs/LoadToMsgs';
-import LoadFromMsgs from '../LoadFromMsgs/LoadFromMsgs';
-import WriteToZohoFromMsg from '../WriteToZohoFromMsg/WriteToZohoFromMsg';
+import LoadToMsgs from '../Loaders/LoadToMsgs/LoadToMsgs';
+import LoadFromMsgs from '../Loaders/LoadFromMsgs/LoadFromMsgs';
+import WriteToZohoFromMsg from '../Zohos/WriteToZohoFromMsg/WriteToZohoFromMsg';
 import Board from '../Board/Board';
 import { filter } from 'lodash';
 import './Zoho.css';

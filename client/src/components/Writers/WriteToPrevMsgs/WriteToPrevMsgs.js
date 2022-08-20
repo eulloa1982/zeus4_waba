@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux'
-import "../Board/Board.css";
+import "../../Board/Board.css";
 import { isEmpty } from 'lodash';
 
 const mapStateToProps = state => {
