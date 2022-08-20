@@ -1,17 +1,10 @@
-.superior 
+.superior-text
 {
-position: relative;
-background-color: black;
-
-}
- 
-#contenedor
-{
-    position: absolute;
-    right: -3%;
-    top: 140px;
-    width: 100%;
+    position: absolute;  
+    top: 10%;
+    right: 33%;
     z-index: 1000;
+    min-width: 40%;
     border: 1px solid #686868;
     background-repeat: no-repeat;
     background-position-y: center;
@@ -24,5 +17,4 @@ background-color: black;
     font-family: "Segoe UI";
     box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
     opacity: 0.9;
-    
 }

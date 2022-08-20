@@ -10,14 +10,17 @@ const mapStateToProps = state => {
 export class ErrorComponent extends React.Component {
   render () {
     return (
-      <div class='padre'>
+      <div>
+        {this.props.errors_in.map(post => (
+          <div class='padre animate__animated animate__bounceOutRight animate__delay-4s'>
         
-          {this.props.errors_in.map(post => (
-            <div id="hijo" class="animate__animated animate__bounceOutRight animate__delay-4s"><div >{post}</div> </div>
-          ))}
+         
+            <div >{post}</div>
+          
        
       </div>
-
+      ))}
+      </div>
     );
   }
 };

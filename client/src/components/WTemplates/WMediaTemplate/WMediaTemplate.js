@@ -22,12 +22,10 @@ class WMediaTemplate extends React.Component {
     return (
       <div>
       {this.props.visible ? 
-        <div class="superior">
-          <div id="contenedor" class="animate__animated animate__bounceInRight">
+        <div class="superior-text animate__animated animate__bounceInRight">
             <h3>Media Template</h3>
-            <p>Working on it...</p>
+            <p>Working on it....</p>
         </div>
-      </div>
 
       :
 

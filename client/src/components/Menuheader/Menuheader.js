@@ -29,8 +29,10 @@ const Menuheader = (props) => (
           <p id="designation">Created Time : {props.usrAll.Created_Time}</p>
           <p id="designation">Last Activity Time : {props.usrAll.Last_Activity_Time}</p>
         
-          <p>Type <code>/tmptext to add a WABA Text Template </code></p>
-          <p>Type <code>/tmpmedia to add a WABA Media Template </code></p>
+          <p>Type <code>/tpltext </code>to add a WABA Text Template </p>
+          <p>Type <code>/tplmedia </code>to add a WABA Media Template </p>
+          <p>Type <code>/tplshow </code>to view all templates </p>
+          <p>Type <code>/template </code>before template name if you want to send a template </p>
         </div>
 
         <div id="info-cards">

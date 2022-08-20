@@ -10,6 +10,8 @@ var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
 var wabaRouter = require("./routes/wabasend");
 var wabaTemplate = require("./routes/wabaTemplate")
+var wabaMessage = require("./routes/wabaMessage")
+
 //var tokenRouter = require("./routes/token");
 
 
@@ -32,6 +34,8 @@ app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 app.use("/wabasend", wabaRouter);
 app.use("/wabatemplate", wabaTemplate);
+app.use("/wabamessage", wabaMessage);
+
 //app.use("/token", tokenRouter);
 
 // The "catchall" handler: for any request that doesn't
@@ -50,7 +54,6 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log('error', res.locals)
   // send back an easily understandable error message to the caller
   res.status(500).send(err.response.data)
   //res.render('error');

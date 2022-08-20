@@ -26,13 +26,12 @@ router.get("/", function(req, res, next) {
 });
 
 //protect all other routes
-//router.all("*", validateToken);
+router.all("*", validateToken);
 
 
 router.post("/", asyncHandler(async function(req, res) {
     const { template_name, language, category, template_text } = req.body
-    console.log('Body', req.body)
-    let sendMessage = await waba.sendTextTemplate(template_name, language, category, template_text)
+    let sendMessage = await waba.createTextTemplate(template_name, language, category, template_text)
         .then(message => {
             res.status(200).send({
                 data: message

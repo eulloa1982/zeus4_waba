@@ -1,21 +1,25 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { addOwnMessage } from '../../js/actions/index'
+import { errorsIn } from "../../js/actions/errors";
 import "./Board.css";
 import { isEmpty } from 'lodash';
 import WriteToPrevMsgs from '../WriteToPrevMsgs/WriteToPrevMsgs';
 import WriteFromPrevMsgs from '../WriteFromPrevMsgs/WriteFromPrevMsgs';
 import WriteToLiveMsgs from '../WriteToLiveMsgs/WriteToLiveMsgs';
 import Error from '../Error/Error';
-import WTemplate from '../WTemplate/WTemplate';
-import WMediaTemplate from "../WMediaTemplate/WMediaTemplate";
+import WTemplate from '../WTemplates/WTemplate/WTemplate';
+import WMediaTemplate from "../WTemplates/WMediaTemplate/WMediaTemplate";
+import WTemplateBoard from "../WTemplates/WTemplateBoard/WTemplateBoard";
 
 
 function mapDispatchToProps(dispatch) {
   return {
-    addOwnMessage: message => dispatch(addOwnMessage(message))
+    addOwnMessage: message => dispatch(addOwnMessage(message)),
+    errorsIn: message => dispatch(errorsIn(message))
   };
 }
+
 const mapStateToProps = state => {
   return { messages_in: state.messages_in, to_prev_messages: state.to_prev_messages, from_prev_messages: state.from_prev_messages }
 }
@@ -27,7 +31,8 @@ class BoardComponent extends React.Component {
     this.state = { message: '', 
                     mobileTo: '',
                     showTextTemplateForm: false,
-                    showMediaTemplateForm: false }
+                    showMediaTemplateForm: false,
+                    showAllTemplates: false }
     this.handleMessage = this.handleMessage.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.mobile = '';
@@ -40,16 +45,20 @@ class BoardComponent extends React.Component {
     let value = event.target.value;
 
     switch (value) {
-      case '/tmptext':
+      case '/tpltext':
         this.setState({showTextTemplateForm: true});
         break;
-      case '/tmpmedia':
+      case '/tplmedia':
         this.setState({showMediaTemplateForm: true});
+        break;
+      case '/tplshow':
+        this.setState({showAllTemplates: true});
         break;
       default:
         this.setState({
                     showTextTemplateForm: false,
-                    showMediaTemplateForm: false
+                    showMediaTemplateForm: false,
+                    showAllTemplates: false
                   });
         break;
     }
@@ -61,16 +70,29 @@ class BoardComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     if (isEmpty(this.props.mobile)) {
-      alert('You need to configure a mobile number for this user')
+      this.props.errorsIn ("No mobile detected in this contact");
       throw new Error("No mobile configure")
     }
       
     if (this.state.message !== '') {
-      this.props.addOwnMessage({ mobile: this.props.mobile, message: this.state.message });
-      this.setState({
-        message: ''
-      });
+      if (this.messageRouter()) {
+        this.props.addOwnMessage({ mobile: this.props.mobile, message: this.state.message });
+        this.setState({
+          message: ''
+        });
+      }
     }
+  }
+
+  //check message contain for specials chars combinations
+  messageRouter() {
+    const message = this.state.message
+    if (message.indexOf('/template') === 0) {
+      //temporal error
+      this.props.errorsIn ("/template Message is not supported yet");
+      return false;
+    }
+    return true;
   }
 
 
@@ -82,6 +104,7 @@ class BoardComponent extends React.Component {
         <div class="chat-window">
           <WTemplate visible={this.state.showTextTemplateForm} />
           <WMediaTemplate visible={this.state.showMediaTemplateForm} />
+          <WTemplateBoard visible={this.state.showAllTemplates} />
           <Error />
           <WriteToPrevMsgs />
           <WriteFromPrevMsgs />
