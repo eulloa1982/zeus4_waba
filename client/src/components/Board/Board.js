@@ -39,6 +39,10 @@ class BoardComponent extends React.Component {
     this.fullname = window.fullname;
   }
 
+  state = {
+    template_board: ''
+  }
+
   handleMessage(event) {
     this.setState({ message: event.target.value })
     this.setState({showTextTemplateForm: false})
@@ -95,16 +99,22 @@ class BoardComponent extends React.Component {
     return true;
   }
 
-
+  //wtemplateboard callback function
+  //set /template type message
+  handleTemplate = (tmp) => {
+    this.setState({template_board: tmp})
+    this.setState({
+      message: `/template ${tmp}`
+    })
+  }
 
   render() {
     return(
       <div id='columna2' class="main">
-        
         <div class="chat-window">
           <WTemplate visible={this.state.showTextTemplateForm} />
           <WMediaTemplate visible={this.state.showMediaTemplateForm} />
-          <WTemplateBoard visible={this.state.showAllTemplates} />
+          <WTemplateBoard handlerTemp={this.handleTemplate} visible={this.state.showAllTemplates} />
           <Error />
           <WriteToPrevMsgs />
           <WriteFromPrevMsgs />

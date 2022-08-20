@@ -172,7 +172,7 @@ span > .contact-data {font-size: 12px;}
   height: 62rem;
   overflow: scroll;
   overflow-x: hidden;
-  background: url('../../../public/images/bg-chat.png');
+  background: url('../../vendor/images/bg-chat.png');
   background-repeat: repeat;
 }
 

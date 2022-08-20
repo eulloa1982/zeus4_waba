@@ -58,8 +58,6 @@ export function sendTemplate(payload) {
                 let response = {...json}
                 if (!isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
-                    payload.error = response.error.message;
-                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
@@ -73,6 +71,45 @@ export function sendTemplate(payload) {
             })
     }
 }
+
+
+/**get approved templates from whatsapp */
+export function getTemplates(payload) {
+    return dispatch => {
+        const token = localStorage.getItem('jwtToken')
+        const options = {
+            method: `GET`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer: ${token}`
+              },
+            
+            };
+
+        return fetch("/gettemplates", options)
+            .then(res => res.json())
+            .then(json => {
+                let response = {...json}
+                console.log("Response Get templates", response)
+                if (!isEmpty(response.error)){
+                    dispatch({type: ERROR_IN, payload: response.error.message});
+                    //payload.error = response.error.message;
+                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                } else if (isObject(response.errors)){
+                    dispatch({type: ERROR_IN, payload: response.errors.message});                    
+                } else {
+                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                }
+                
+            })
+            .catch(err => {
+                dispatch({type: ERROR_IN, payload: 'An unknown error occurred when trying to retrieve WhatsApp Templates'});
+            })
+    }
+}
+
+
 
 
 export function addPrevMessagesTo(payload) {

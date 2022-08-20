@@ -1,12 +1,12 @@
 .padre 
 {
     position: absolute;  
-    top: 10%;
+    top: 40%;
     right: 33%;
     z-index: 1000;
     min-width: 40%;
     border: 1px solid #686868;
-    background-image: url('../../../public/images/error.jpg');
+    background-image: url('../../vendor/images/error.jpg');
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 0.5rem;

@@ -62,13 +62,30 @@ exports.sendMessage = async(to, message) => {
 };
 
 
+/**get templates in whatsapp */
+exports.getMessagesTemplates = async() => {
+    const response = await axios({
+                method: 'GET', // *GET, POST, PUT, DELETE, etc. 100698539410392
+                url: `https://graph.facebook.com/v12.0/100698539410392/message_templates`, 
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
+                },
+    })
+    .then(data => {
+        return (JSON.stringify(data))
+    })
+    
+};
+
+
 
 
 // Create a Text Template to WhastApp
 exports.createTextTemplate = async(template_name, language, category, template_text) => {
     // Default options are marked with *
     dataSend = { "name": template_name, "language": language, "category": category, "components": [{ "type": "BODY", "text": template_text }] };
-    console.log("Data template", dataSend)
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
                 url: `https://graph.facebook.com/v12.0/100698539410392/message_templates`, 

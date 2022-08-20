@@ -1,0 +1,11 @@
+Method	Endpoint			DATA				node_function			DESCRIPTION
+POST	/wabamessage 	{to, message} 			sendMessage				Send a text message
+
+POST	/wabasend	  {to, template_name	sendTemplateMessage		Send Template to Customer (No terminado)
+						language}
+
+POST  	/wabatemplate	{template_name, 	createTextTemplate		Create Text Template (No terminado)
+						language, category,
+						template_text	}
+						
+GET 	/gettemplates	{}					getMessagesTemplates	Get all templates on WhatsApp	

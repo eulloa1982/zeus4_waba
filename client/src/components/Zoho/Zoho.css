@@ -12,7 +12,7 @@
     top: 20px;
     width: 100%;
     z-index: 1000;
-    background-image: url(../../../public/images/Loading.gif);
+    background-image: url('../../vendor/images/Loading.gif');
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 10rem;

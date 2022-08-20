@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var wabaRouter = require("./routes/wabasend");
 var wabaTemplate = require("./routes/wabatemplate")
 var wabaMessage = require("./routes/wabamessage")
+var wabaGetTemplates = require("./routes/wabagettemplates")
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use('/', indexRouter);
 app.use("/wabasend", wabaRouter);
 app.use("/wabatemplate", wabaTemplate);
 app.use("/wabamessage", wabaMessage);
+app.use("/gettemplates", wabaGetTemplates);
 
 //app.use("/token", tokenRouter);
 
