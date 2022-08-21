@@ -6,7 +6,8 @@ import { ERROR_IN,
         TO_PREV_MSG,
         FROM_LIVE_MSG, 
         DELETE_FROM_PREV_MSG,
-        DELETE_TO_PREV_MSG
+        DELETE_TO_PREV_MSG,
+        DELETE_FROM_LIVE_MSG
     } from '../constants';
 
 //send a simple text message
@@ -149,6 +150,14 @@ export function deletePrevMessagesTo(payload) {
         dispatch({ type: DELETE_TO_PREV_MSG, payload})
     }
 }
+
+export function deleteLiveMessagesFrom(payload) {
+    return dispatch => {
+        dispatch({ type: DELETE_FROM_LIVE_MSG, payload})
+    }
+}
+
+
 
 
 export function writeError(payload) {

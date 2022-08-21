@@ -1,14 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { deletePrevMessagesFrom } from '../../../js/actions/index'
-
 import { isEmpty } from 'lodash';
 import './WriteFromPrevMsgs.css'
 
 const WriteFromPrevMsgs = () => {
   const from_prev_messages = useSelector(store => store.from_prev_messages)
   const dispatch = useDispatch();
-  
+
   return (
     <div>
       {from_prev_messages.map(msg => (

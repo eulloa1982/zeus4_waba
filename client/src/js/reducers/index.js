@@ -4,7 +4,8 @@ import { OWN_MESSAGE_IN,
         TO_PREV_MSG, 
         FROM_LIVE_MSG,
         DELETE_FROM_PREV_MSG,
-        DELETE_TO_PREV_MSG
+        DELETE_TO_PREV_MSG,
+        DELETE_FROM_LIVE_MSG
       } from "../constants/index";
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
   errors_in: [],
   to_prev_messages: [{message: ''}],
   from_prev_messages: [{message: ''}],
-  from_live_messages: [{message: ''}],
+  from_live_messages: [],
   messages_id: []
 };
 
@@ -68,6 +69,14 @@ function rootReducer(state = initialState, action) {
             }
         }
 
+        case DELETE_FROM_LIVE_MSG: {
+          const byId = action.payload
+          return {
+                  ...state,
+                  from_live_messages: state.from_live_messages.filter(msg => msg.id !== byId),
+                  messages_id: state.messages_id.concat(byId)
+              }
+          }
     
     default:
       return state;
