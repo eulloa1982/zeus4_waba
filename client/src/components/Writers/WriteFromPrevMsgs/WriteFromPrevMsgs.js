@@ -15,17 +15,16 @@ const WriteFromPrevMsgs = () => {
         ?
           <div class="sender">
               <span class="sender-message">{msg.zeus4waba__w} </span>
-              <span class="message-time">{msg.Created_Time}</span>
+              <span class="align-right" onClick={() => dispatch(deletePrevMessagesFrom(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach"  /></span>              
                 {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
                 ) 
                 : 
                 (
-                  <span class="message-status"><img src="./images/error.png" alt="attach" /></span>
+                  <span class="align-right"><img src="./images/error.png" alt="attach" /></span>
                 )} 
-                <span class="message-delete" onClick={() => dispatch(deletePrevMessagesFrom(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach"  /></span>
-                
+                <span class="message-time align-right">{msg.Created_Time}</span>
             </div>
             
             :

@@ -15,7 +15,6 @@ const DeleteToZohoMsg = () => {
     if (last_id_message && last_id_message !== '' && last_id_message !== null) {
         ZOHO.CRM.API.deleteRecord({Entity: 'zeus4waba__Whatsapps', RecordID: `${last_id_message}`})
           .then((response => {
-            console.log(response)
             const status = response.data[0].status
             if (status !== 'success') {
               dispatch(writeError(response.data[0].message))

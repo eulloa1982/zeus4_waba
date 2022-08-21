@@ -1,9 +1,9 @@
-.message-delete {
+.align-right {
     opacity: 0.6;
-    align: right;
+    float: right;
 }
 
-.message-delete :hover {
+.align-right :hover {
     opacity: 0.3;
     box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
 

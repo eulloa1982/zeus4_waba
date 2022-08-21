@@ -1,62 +1,41 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
 import {sendTemplate} from '../../../js/actions/index';
 import './WTemplate.css';
 
-function mapDispatchToProps(dispatch) {
-  return {
-    sendTemplate: message => dispatch(sendTemplate(message))
-  };
-}
+const WTemplate = (props) => {
 
+  const dispatch = useDispatch();
+  const [data, setData] = useState({
+                            visible: props.visible,
+                            title: '',
+                            language: 'en_US',
+                            category: 'MARKETING',
+                            message_text: ''
+                          })
 
-class WTemplate extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { 
-      visible: this.props.visible,
-      title: '',
-      language: 'en_US',
-      category: 'MARKETING',
-      message_text: ''
-    }
-
-    this.handleSubmit = this.handleSubmit.bind(this);
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name] : event.target.value
+    })
   }
 
-  handleTitle = (event) => {
-    this.setState({title: event.target.value})
-  }
-
-  handleLanguage = (event) => {
-    this.setState({language: event.target.value})  
-  }
-
-  handleCategory = (event) => {
-    this.setState({category: event.target.value})
-  }
-
-  handleText = (event) => {
-    this.setState({message_text: event.target.value})
-  }
-
-  handleSubmit() {
+  const handleSubmit = () => {
     const object = {
-      template_name: this.state.title,
-      language: this.state.language,
-      category: this.state.category,
-      template_text: this.state.message_text
+      template_name: data.title,
+      language: data.language,
+      category: data.category,
+      template_text: data.message_text
 
     }
+    dispatch(sendTemplate({ ...object}))
 
-    this.props.sendTemplate({ ...object });
   }
 
-  
-  render() {
-    return (
-      <div>
-      {this.props.visible ? 
+  return (
+    <div>
+      {props.visible ? 
         <div class="superior-text animate__animated animate__bounceInRight">
             <h3>Text Template</h3>
             <div class="form-row">
@@ -64,20 +43,21 @@ class WTemplate extends React.Component {
                 <label for="title">Title</label>
                 <input 
                     type="text" 
-                    class="form-control" 
+                    class="form-control"
+                    name="title"
                     placeholder="Template Title"
-                    onChange={this.handleTitle} />
+                    onChange={handleInputChange} />
               </div>  
               <div class="form-group col-md-6">
                 <label for="language">Language</label>
-                <select id="language" class="form-control" onChange={this.handleLanguage}>
+                <select name="language" class="form-control" onChange={handleInputChange}>
                   <option selected>Choose...</option>
                   <option value='en_US'>US</option>
                 </select>    
               </div>
               <div class="form-group col-md-6">
                 <label for="category">Category</label>
-                <select id="category" class="form-control" onChange={this.handleCategory}>
+                <select name="category" class="form-control" onChange={handleInputChange}>
                   <option selected>Choose...</option>
                   <option value='TRANSACTIONAL'>Transactional</option>
                   <option value='MARKETING'>Marketing</option>
@@ -90,12 +70,13 @@ class WTemplate extends React.Component {
                 <textarea 
                       class="form-control"
                       placeholder="Template plain text"
-                      onChange={this.handleText}      
+                      name="message_text"
+                      onChange={handleInputChange}      
                 />
               </div>
             </div>
             
-            <button type="submit" class="btn btn-primary" onClick={this.handleSubmit}>Send Template</button>
+            <button type="submit" class="btn btn-primary" onClick={handleSubmit}>Send Template</button>
       </div>
 
       :
@@ -104,14 +85,7 @@ class WTemplate extends React.Component {
       }
       </div>
 
-
-      
-  
-    )
-  }
+  )
 }
 
-
-
-const connected = connect('', mapDispatchToProps)(WTemplate);
-export default connected;
+export default WTemplate;

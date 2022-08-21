@@ -452,6 +452,7 @@ a {
   padding: 0.8rem 1rem;
   margin-bottom: 0.3rem;
   position: relative;
+  min-height: auto;
 }
 
 .sender {
