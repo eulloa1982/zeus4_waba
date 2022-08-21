@@ -1,41 +1,40 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { deletePrevMessagesFrom } from '../../../js/actions/index'
+
 import { isEmpty } from 'lodash';
+import './WriteFromPrevMsgs.css'
 
-
-const mapStateToProps = state => {
-  return { from_prev_messages: state.from_prev_messages }
-}
-
-class WriteFromPrevMsgs extends React.Component {
+const WriteFromPrevMsgs = () => {
+  const from_prev_messages = useSelector(store => store.from_prev_messages)
+  const dispatch = useDispatch();
   
-  render() {
-    return(
-      <div>
-        {this.props.from_prev_messages.map(post => (
-          (post.message !== null && post.message !== '') ?
-            
-            <div class="sender">
-              <span class="sender-message">{post.message} </span>
-              <span class="message-time">{post.time}</span>
-                {isEmpty(post.status) ? 
+  return (
+    <div>
+      {from_prev_messages.map(msg => (
+        (msg.zeus4waba__w !== null && msg.zeus4waba__w !== '') 
+        ?
+          <div class="sender">
+              <span class="sender-message">{msg.zeus4waba__w} </span>
+              <span class="message-time">{msg.Created_Time}</span>
+                {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
                 ) 
                 : 
                 (
                   <span class="message-status"><img src="./images/error.png" alt="attach" /></span>
-                )}                  
+                )} 
+                <span class="message-delete" onClick={() => dispatch(deletePrevMessagesFrom(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach"  /></span>
+                
             </div>
             
             :
 
             ''
-            
-            ))}
-          </div>      )
-    } 
+      ))}
+    </div>
+  )
 }
 
-const connected = connect(mapStateToProps, '')(WriteFromPrevMsgs);
-export default connected;
+export default WriteFromPrevMsgs;

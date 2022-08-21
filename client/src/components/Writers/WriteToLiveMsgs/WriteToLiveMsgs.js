@@ -1,37 +1,35 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { isEmpty } from 'lodash';
 
 
-const mapStateToProps = state => {
-  return { messages_in: state.messages_in }
-}
+const WriteToLiveMsgs = (props) => {
+  const from_live_messages = useSelector(store => store.from_live_messages)
 
-class WriteToLiveMsgs extends React.Component {
- 
-
-  render() {
-    return(
-      <div>
-
-          {this.props.messages_in.map(post => (
-            <div class="sender">
-              <span class="sender-message">{post.message} </span>
-              <span class="message-time">21:32</span>
-              {isEmpty(post.error) ? 
+  return (
+    <div>
+      {from_live_messages.map(msg => (
+        (msg.zeus4waba__w !== null && msg.zeus4waba__w !== '') 
+        ?
+          <div class="sender" data-id={msg.id}>
+              <span class="sender-message">{msg.zeus4waba__w} </span>
+              <span class="message-time">{msg.Created_Time}</span>
+                {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
                 ) 
                 : 
                 (
                   <span class="message-status"><img src="./images/error.png" alt="attach" /></span>
-                )}
+                )}                  
             </div>
-            ))}
-        </div>
-      )
-    } 
+            
+            :
+
+            ''
+      ))}
+    </div>
+  )
 }
 
-const connected = connect(mapStateToProps, '')(WriteToLiveMsgs);
-export default connected;
+export default WriteToLiveMsgs

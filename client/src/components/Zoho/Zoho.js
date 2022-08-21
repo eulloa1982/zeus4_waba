@@ -4,6 +4,7 @@ import Menuheader from '../Menuheader/Menuheader';
 import LoadToMsgs from '../Loaders/LoadToMsgs/LoadToMsgs';
 import LoadFromMsgs from '../Loaders/LoadFromMsgs/LoadFromMsgs';
 import WriteToZohoFromMsg from '../Zohos/WriteToZohoFromMsg/WriteToZohoFromMsg';
+import DeleteToZohoMsg from '../Zohos/DeleteToZohoMsg/DeleteToZohoMsg';
 import Board from '../Board/Board';
 import { filter } from 'lodash';
 import './Zoho.css';
@@ -13,6 +14,7 @@ function App() {
   const [userAll, setUsr] = React.useState('');
   const [messagesToPrev, getMessagesTo] = React.useState('');
   const [messagesFromPrev, getMessagesFrom] = React.useState('');
+  const [allMessages, getAllMessages] = React.useState('');
   const [userId, getUserId] = React.useState('');
   const [entity, getEntity] = React.useState('');
   const [mobile, getMobile] = React.useState('');
@@ -44,6 +46,7 @@ function App() {
               //select pre messages
               ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
                 .then((dataMessage => {
+                  getAllMessages(dataMessage.data)
                   //Separar los mensajes To y From, para agregarlos al store correctamente
                   let messagesTo = filter(dataMessage.data, {'zeus4waba__Whatsapp_To': `${recordID}`})
                   let messagesFrom = filter(dataMessage.data, {'zeus4waba__Whatsapp_From': `${recordID}`})
@@ -85,7 +88,6 @@ const ContentLoader = () =>{
     </div>
     )
   } else {
-    //this.setParams();
     // API Data Loaded Succesfully: 
     // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
     return (
@@ -95,6 +97,7 @@ const ContentLoader = () =>{
           <LoadToMsgs msgTo={messagesToPrev}/>
           <LoadFromMsgs msgFrom={messagesFromPrev} />
           <WriteToZohoFromMsg user={userId}/>
+          <DeleteToZohoMsg />
         </div>
       )
   }

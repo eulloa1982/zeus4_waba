@@ -1,47 +1,43 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import "../../Board/Board.css";
 import { isEmpty } from 'lodash';
+import { deletePrevMessagesTo } from '../../../js/actions/index'
 
-const mapStateToProps = state => {
-  return { to_prev_messages: state.to_prev_messages }
-}
 
-class WriteToPrevMsgs extends React.Component {
-  
-  render() {
-    return (
-        <div>       
-          {this.props.to_prev_messages.map(post => (
-            (post.message !== null && post.message !== '') ? 
-            <div class="receiver">
-              <span class="receiver-message">{post.message} </span>
-              <span class="message-time">{post.time}</span>
-              {isEmpty(post.status) ? 
+const WriteToPrevMsgs = () => {
+  const to_prev_messages = useSelector(store => store.to_prev_messages)
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      {to_prev_messages.map(msg => (
+        (msg.zeus4waba__w !== null && msg.zeus4waba__w !== '') 
+        ?
+          <div class="receiver">
+              <span class="receiver-message">{msg.zeus4waba__w} </span>
+              <span class="message-time">{msg.Created_Time}</span>
+                {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
                 ) 
                 : 
                 (
                   <span class="message-status"><img src="./images/error.png" alt="attach" /></span>
-                )}
+                )}  
+                <span class="message-delete" onClick={() => dispatch(deletePrevMessagesTo(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach" /></span>
+                
             </div>
             
             :
 
             ''
-          ))}
-        </div>
-    )
-  }
-   
-      
-
-          
-      
-    
+      ))}
+    </div>
+  )
 }
 
-const connected = connect(mapStateToProps, '')(WriteToPrevMsgs);
-export default connected;
+export default WriteToPrevMsgs;
+
+
 

@@ -1,6 +1,13 @@
 import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
-import { ERROR_IN, OWN_MESSAGE_IN, FROM_PREV_MSG, TO_PREV_MSG } from '../constants';
+import { ERROR_IN, 
+        OWN_MESSAGE_IN, 
+        FROM_PREV_MSG, 
+        TO_PREV_MSG,
+        FROM_LIVE_MSG, 
+        DELETE_FROM_PREV_MSG,
+        DELETE_TO_PREV_MSG
+    } from '../constants';
 
 //send a simple text message
 export function addOwnMessage(payloadSend) {
@@ -122,5 +129,30 @@ export function addPrevMessagesTo(payload) {
 export function addPrevMessagesFrom(payload) {
     return dispatch => {
         dispatch({ type: FROM_PREV_MSG, payload: payload });
+    }
+}
+
+export function addLiveMessagesFrom(payload) {
+    return dispatch => {
+        dispatch({ type: FROM_LIVE_MSG, payload: payload });
+    }
+}
+
+export function deletePrevMessagesFrom(payload) {
+    return dispatch => {
+        dispatch({ type: DELETE_FROM_PREV_MSG, payload})
+    }
+}
+
+export function deletePrevMessagesTo(payload) {
+    return dispatch => {
+        dispatch({ type: DELETE_TO_PREV_MSG, payload})
+    }
+}
+
+
+export function writeError(payload) {
+    return dispatch => {
+        dispatch({type: ERROR_IN, payload})
     }
 }
