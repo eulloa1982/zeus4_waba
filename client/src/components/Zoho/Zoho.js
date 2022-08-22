@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react';
 import { ZOHO } from '../../vendor/ZSDK';
 import Menuheader from '../Menuheader/Menuheader';
-import LoadToMsgs from '../Loaders/LoadToMsgs/LoadToMsgs';
-import LoadFromMsgs from '../Loaders/LoadFromMsgs/LoadFromMsgs';
 import WriteToZohoFromMsg from '../Zohos/WriteToZohoFromMsg/WriteToZohoFromMsg';
 import DeleteToZohoMsg from '../Zohos/DeleteToZohoMsg/DeleteToZohoMsg';
+import LoadAllMsgs from '../Loaders/LoadAllMsgs/LoadAllMsgs';
 import Board from '../Board/Board';
-import { filter } from 'lodash';
 import './Zoho.css';
 
 function App() {
 
   const [userAll, setUsr] = React.useState('');
-  const [messagesToPrev, getMessagesTo] = React.useState('');
-  const [messagesFromPrev, getMessagesFrom] = React.useState('');
   const [allMessages, getAllMessages] = React.useState('');
   const [userId, getUserId] = React.useState('');
   const [entity, getEntity] = React.useState('');
@@ -47,12 +43,6 @@ function App() {
               ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
                 .then((dataMessage => {
                   getAllMessages(dataMessage.data)
-                  //Separar los mensajes To y From, para agregarlos al store correctamente
-                  let messagesTo = filter(dataMessage.data, {'zeus4waba__Whatsapp_To': `${recordID}`})
-                  let messagesFrom = filter(dataMessage.data, {'zeus4waba__Whatsapp_From': `${recordID}`})
-                  
-                  getMessagesTo(messagesTo)
-                  getMessagesFrom(messagesFrom)
                   setIsLoaded(true);
                 }))
             })
@@ -94,8 +84,7 @@ const ContentLoader = () =>{
         <div>
           <Board mobile={mobile} entity={entity} />
           <Menuheader usrAll={userAll} />
-          <LoadToMsgs msgTo={messagesToPrev}/>
-          <LoadFromMsgs msgFrom={messagesFromPrev} />
+          <LoadAllMsgs messages={allMessages}/>
           <WriteToZohoFromMsg user={userId}/>
           <DeleteToZohoMsg />
         </div>

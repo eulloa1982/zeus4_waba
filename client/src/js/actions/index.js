@@ -2,12 +2,8 @@ import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
 import { ERROR_IN, 
         OWN_MESSAGE_IN, 
-        FROM_PREV_MSG, 
-        TO_PREV_MSG,
-        FROM_LIVE_MSG, 
-        DELETE_FROM_PREV_MSG,
-        DELETE_TO_PREV_MSG,
-        DELETE_FROM_LIVE_MSG
+        ALL_MSG,
+        DELETE_ALL_MSG
     } from '../constants';
 
 //send a simple text message
@@ -118,47 +114,17 @@ export function getTemplates(payload) {
 }
 
 
-
-
-export function addPrevMessagesTo(payload) {
+export function addAllMessages(payload) {
     return dispatch => {
-        dispatch({ type: TO_PREV_MSG, payload: payload });
+        dispatch({ type: ALL_MSG, payload: payload });
     }
 }
 
-
-export function addPrevMessagesFrom(payload) {
+export function deleteAllMessages(payload) {
     return dispatch => {
-        dispatch({ type: FROM_PREV_MSG, payload: payload });
+        dispatch({ type: DELETE_ALL_MSG, payload})
     }
 }
-
-export function addLiveMessagesFrom(payload) {
-    return dispatch => {
-        dispatch({ type: FROM_LIVE_MSG, payload: payload });
-    }
-}
-
-export function deletePrevMessagesFrom(payload) {
-    return dispatch => {
-        dispatch({ type: DELETE_FROM_PREV_MSG, payload})
-    }
-}
-
-export function deletePrevMessagesTo(payload) {
-    return dispatch => {
-        dispatch({ type: DELETE_TO_PREV_MSG, payload})
-    }
-}
-
-export function deleteLiveMessagesFrom(payload) {
-    return dispatch => {
-        dispatch({ type: DELETE_FROM_LIVE_MSG, payload})
-    }
-}
-
-
-
 
 export function writeError(payload) {
     return dispatch => {

@@ -1,16 +1,14 @@
 import React from 'react';
 import { ZOHO } from '../../../vendor/ZSDK';
 import { useSelector, useDispatch } from 'react-redux';
-import { addLiveMessagesFrom } from '../../../js/actions/index'
+import { addAllMessages } from '../../../js/actions/index'
 import { last } from 'lodash';
 
 
 function WriteToZohoFromMsg(props) {
-    const messages = useSelector(store => store.messages_in)
-
+    const messages = useSelector(store => store.messages_out)
     const dispatch = useDispatch()
     const last_in_message = last(messages)
-
 
     let status = '';
     //set type of message between successfully and unsuccessfully delivered
@@ -27,9 +25,8 @@ function WriteToZohoFromMsg(props) {
           //get the record
           ZOHO.CRM.API.getRecord({Entity: 'zeus4waba__Whatsapps', RecordID: id})
             .then((response => {
-              dispatch(addLiveMessagesFrom(response.data));
+              dispatch(addAllMessages(response.data));
             }))
-          //dispatch(addLiveMessagesFrom(dataMessage.data[0]));
         }))
         .catch((e) => console.log(e))
     }

@@ -4,9 +4,7 @@ import { addOwnMessage } from '../../js/actions/index'
 import { errorsIn } from "../../js/actions/errors";
 import "./Board.css";
 import { isEmpty } from 'lodash';
-import WriteToPrevMsgs from '../Writers/WriteToPrevMsgs/WriteToPrevMsgs';
-import WriteFromPrevMsgs from '../Writers/WriteFromPrevMsgs/WriteFromPrevMsgs';
-import WriteToLiveMsgs from '../Writers/WriteToLiveMsgs/WriteToLiveMsgs';
+import WriteAllMsgs from "../Writers/WriteAllMsgs/WriteAllMsgs";
 import Error from '../Error/Error';
 import WTemplate from '../WTemplates/WTemplate/WTemplate';
 import WMediaTemplate from "../WTemplates/WMediaTemplate/WMediaTemplate";
@@ -117,10 +115,7 @@ class BoardComponent extends React.Component {
           <WMediaTemplate visible={this.state.showMediaTemplateForm} />
           <WTemplateBoard handlerTemp={this.handleTemplate} visible={this.state.showAllTemplates} />
           <Error />
-          <WriteToPrevMsgs />
-          <WriteFromPrevMsgs />
-          <WriteToLiveMsgs />
-          
+          <WriteAllMsgs/>          
           
         </div>
           
