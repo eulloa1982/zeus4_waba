@@ -33,18 +33,29 @@ exports.sendTemplateMessage = async(to, template_name, language) => {
     
 };
 
-/**send a normal whatsapp message */
-exports.sendMessage = async(to, message) => {
+/**
+ * send a normal whatsapp text message 
+ * @to          string                      number destination
+ * @message     string                      text message
+ * @from        string                      WABA Number ID
+ * @context     array(message_id: number)   if is a text reply message
+ * 
+*/
+exports.sendMessage = async(to, message, from, context = null) => {
     // Default options are marked with *
-    dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
-                "to": to, "type": "text", 
-                "text": {
-                    "preview_url": false,
-                    "body": message
-                }} ;
+    dataSend = {}
+    dataSend.messaging_product = "whatsapp";
+    dataSend.recipient_type = "individual";
+    dataSend.to = to;
+    dataSend.type = "text";
+    dataSend.text = {'preview_url': false, 'body': message ? message : ''};
+    if (context)
+        dataSend.context = context;
+    
+        console.log("prepared messags", dataSend)
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/100698539410392/messages`, 
+                url: `https://graph.facebook.com/v12.0/${from}/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit

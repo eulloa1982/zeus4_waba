@@ -53,6 +53,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // send back an easily understandable error message to the caller
+  //console.log(err)
   res.status(500).send(err.response.data)
   //res.render('error');
 });

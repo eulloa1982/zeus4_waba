@@ -2,7 +2,7 @@ import React from 'react';
 import { ZOHO } from '../../../vendor/ZSDK';
 import { useSelector, useDispatch } from 'react-redux';
 import { addAllMessages } from '../../../js/actions/index'
-import { last } from 'lodash';
+import { last, isEmpty } from 'lodash';
 
 
 function WriteToZohoFromMsg(props) {
@@ -15,10 +15,16 @@ function WriteToZohoFromMsg(props) {
     if (last_in_message !== '') {
       status = 'error'
     }
+
+    const context = !isEmpty(last_in_message.context) ? last_in_message.context.message_id : ''
     
     //set data to insert
     if (last_in_message.message !== '' && last_in_message.message !== null) {
-      const data = {'Name': props.user, 'zeus4waba__Whatsapp_From': props.user, 'zeus4waba__w': `${last_in_message.message}`, 'zeus4waba__Whatsapp_Status': `${status}`}
+      const data = {'Name': props.user, 'zeus4waba__Whatsapp_From': props.user, 
+                'zeus4waba__w': `${last_in_message.message}`, 
+                'zeus4waba__Whatsapp_Status': `${status}`,
+                'zeus4waba__ReplyTo': `${context}`}
+
       ZOHO.CRM.API.insertRecord({Entity: 'zeus4waba__Whatsapps', APIData: data})
         .then((dataMessage => {
           const id = dataMessage.data[0].details.id

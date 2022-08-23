@@ -8,3 +8,9 @@
     box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
 
 }
+
+.receiver-message-reply {
+    font-size: smaller;
+    background-color: #e9dede;
+    padding: 5px 4px 5px 9px;
+}

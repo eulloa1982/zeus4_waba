@@ -14,7 +14,7 @@ function App() {
   const [userId, getUserId] = React.useState('');
   const [entity, getEntity] = React.useState('');
   const [mobile, getMobile] = React.useState('');
-
+  const [mobileFromId, getWabaID] = React.useState(0);
 
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -43,13 +43,20 @@ function App() {
               ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
                 .then((dataMessage => {
                   getAllMessages(dataMessage.data)
+                  console.log('all messages', dataMessage.data)
                   setIsLoaded(true);
                 }))
             })
             
             .catch((e) => console.log(e))
     
+
+            ZOHO.CRM.API.getOrgVariable("zeus4waba__WhatsAppBFrom").then(function(data){
+              getWabaID(data.Success.Content);
+            });
           })
+
+          
           
           return await ZOHO.embeddedApp.init();
 
@@ -82,7 +89,7 @@ const ContentLoader = () =>{
     // render the completed interface with data loaded, triggered by the state update of isLoaded and !error (no error)
     return (
         <div>
-          <Board mobile={mobile} entity={entity} />
+          <Board mobile={mobile} entity={entity} wabaId={mobileFromId} />
           <Menuheader usrAll={userAll} />
           <LoadAllMsgs messages={allMessages}/>
           <WriteToZohoFromMsg user={userId}/>

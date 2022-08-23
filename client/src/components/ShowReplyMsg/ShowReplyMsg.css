@@ -1,0 +1,21 @@
+.message-reply {
+    position: absolute;  
+    top: 83.5%;
+    z-index: 1000;
+    width: 65%;
+    border-left: 2px solid #2c723d;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 0.5rem;
+    background-color:  	#f0f0f0;
+    font-size: large;
+    padding: 1rem;
+    flex: 1;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    font-family: "Segoe UI";
+    opacity: 0.9;
+    color: #686868;
+    font-size: small;
+    text-align: justify;
+}

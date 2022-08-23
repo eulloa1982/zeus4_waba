@@ -9,7 +9,7 @@ import Error from '../Error/Error';
 import WTemplate from '../WTemplates/WTemplate/WTemplate';
 import WMediaTemplate from "../WTemplates/WMediaTemplate/WMediaTemplate";
 import WTemplateBoard from "../WTemplates/WTemplateBoard/WTemplateBoard";
-
+import ShowReplyMsg from "../ShowReplyMsg/ShowReplyMsg";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -27,10 +27,14 @@ class BoardComponent extends React.Component {
     //window['initial']();
     super(props)
     this.state = { message: '', 
+                    messageReply: '',
                     mobileTo: '',
                     showTextTemplateForm: false,
                     showMediaTemplateForm: false,
-                    showAllTemplates: false }
+                    showAllTemplates: false,
+                    context: {},
+                    showReplyMsgView: false
+                }
     this.handleMessage = this.handleMessage.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.mobile = '';
@@ -60,7 +64,7 @@ class BoardComponent extends React.Component {
         this.setState({
                     showTextTemplateForm: false,
                     showMediaTemplateForm: false,
-                    showAllTemplates: false
+                    showAllTemplates: false,
                   });
         break;
     }
@@ -78,9 +82,12 @@ class BoardComponent extends React.Component {
       
     if (this.state.message !== '') {
       if (this.messageRouter()) {
-        this.props.addOwnMessage({ mobile: this.props.mobile, message: this.state.message });
+        this.props.addOwnMessage({ to: this.props.mobile, message: this.state.message, from: this.props.wabaId, context: this.state.context });
         this.setState({
-          message: ''
+          message: '',
+          showReplyMsgView: false,
+          context: {},
+          messageReply: '',
         });
       }
     }
@@ -107,6 +114,18 @@ class BoardComponent extends React.Component {
     })
   }
 
+  //writeallmsg callback function
+  //set the id of msg to reply
+  handleReplyMsg = (idMsg, message) => {
+    this.setState({
+      context: {
+        'message_id': idMsg
+      },
+      messageReply: message,
+      showReplyMsgView: true
+    })
+  }
+
   render() {
     return(
       <div id='columna2' class="main">
@@ -115,7 +134,8 @@ class BoardComponent extends React.Component {
           <WMediaTemplate visible={this.state.showMediaTemplateForm} />
           <WTemplateBoard handlerTemp={this.handleTemplate} visible={this.state.showAllTemplates} />
           <Error />
-          <WriteAllMsgs/>          
+          <WriteAllMsgs handlerReply={this.handleReplyMsg} /> 
+          <ShowReplyMsg visible={this.state.showReplyMsgView} message={this.state.messageReply} />        
           
         </div>
           

@@ -31,6 +31,9 @@ export function addOwnMessage(payloadSend) {
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
+                    //aqui debo devolver el objeto de respuesta de whatsapp
+                    //buscando capturar el ID de mensaje que envia Whatsapp
+                    //que seria el response
                     dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
                 }
                 
