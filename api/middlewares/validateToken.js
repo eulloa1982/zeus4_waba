@@ -22,6 +22,7 @@ const privateKey= 'mykey'
       
       
     }
+    //res.status(401).send('Unauthorized: Invalid token');
   }
 
   exports.generateAccessToken = function(username) {
