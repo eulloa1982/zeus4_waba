@@ -79,7 +79,10 @@ class BoardComponent extends React.Component {
       this.props.errorsIn ("No mobile detected in this contact");
       throw new Error("No mobile configure")
     }
-      
+    
+    const data = {to: this.props.mobile, message: this.state.message, from: this.props.wabaId, context: this.state.context}
+    console.log("DATA", data)
+    
     if (this.state.message !== '') {
       if (this.messageRouter()) {
         this.props.addOwnMessage({ to: this.props.mobile, message: this.state.message, from: this.props.wabaId, context: this.state.context });

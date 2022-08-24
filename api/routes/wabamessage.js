@@ -6,11 +6,43 @@ const jwt = require('jsonwebtoken');
 const { validateToken, generateAccessToken, login } = require("../middlewares/validateToken");
 const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
-
+const Ajv = require("ajv")
 
 const passwordHash = '$2b$10$ET29p5cc4nAGsfVkPNrFQ.4ZhyUAQitnKGRkoXdqWmpQsUlJnsJXu'
 const privateKey= 'mykey'
 const username = 'myuser'
+
+/**********   Text Message Schema   ******** */
+const textMsgSchema = {
+    type: "object",
+    properties: {
+      to: {
+        type: "string",
+        description: "Number destination",
+      },
+      message: {
+        type: "string",
+        description: "Text Message",
+      },
+      from: {
+        type: "string",
+        description: "waba id from number",
+        //pattern: "/^\\d+$/"
+        //minLength: 8,
+        //maxLength: 24,
+      },
+      context: {
+        type: "object",
+        maxProperties: 1, 
+        description: "Mandatory fields if message is reply {message_id: number_reply}"
+      }
+    },
+    required: ["to", "message", "from"],
+    additionalProperties: false,
+};
+  
+const ajv = new Ajv()
+
 
 //wrapper around async middleware
 const asyncHandler = fn => (req, res, next) => {
@@ -19,7 +51,7 @@ const asyncHandler = fn => (req, res, next) => {
         .catch(next);
 };
 
-/* initial path */
+/* login app */
 router.post("/login", asyncHandler(async function(req, res) {
     const { password } = req.body;
     try{
@@ -43,7 +75,6 @@ router.post("/login", asyncHandler(async function(req, res) {
             return res.json({token:token})
         }
         else {
-            console.log("Unan access")
             return res.status(401).send(
                 {error: "Unauthorized access"}
             )
@@ -63,23 +94,37 @@ router.get("/", function(req, res, next) {
 router.all("*", validateToken);
 
 
-
-/* 
-/wabaSend 
-send whatsapp message
-@from WhatsApp business number
-@to recipient
-@message text message
-*/
+/**
+ * send a text message
+ * /wabamessage endpoint
+ * @{"to": 'phone_destination', "message": "message",
+ * "from": 'waba ID Number', 
+ * "context": {"message_id": "message_reply_id"}}
+ * please check textMsgSchema to validate fields
+ * */
 router.post("/", asyncHandler(async function(req, res) {
+    const validate = ajv.compile(textMsgSchema)
+    const valid = validate(req.body)
+    if (!valid) {
+        res.status(300).send({
+            error: true,
+            data: validate.errors[0]
+        })
+    }
+    
     const { to, message, from, context } = req.body
-    let sendMessage = await waba.sendMessage(to, message, from, context)
+    let sendMessage = await waba.sendTextMessage(to, message, from, context)
         .then(message => {
             res.status(200).send({
                 data: message
             })
         })
 }));
+
+router.post('*', (req, res) => {
+    res.status(404).send('what???');
+  });
+  
 
 
 module.exports = router;

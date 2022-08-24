@@ -1,60 +1,31 @@
-import React from 'react'
+import React, {useState} from 'react'
 import axios from 'axios'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { errorsIn } from '../../js/actions/errors'
 
 
-function mapDispatchToProps(dispatch) {
-  return {
-    error: message => dispatch(errorsIn(message))
-  };
-}
+const Login = (props) => {
+  const dispatch = useDispatch()
+  const [myKey, setMyKey] = useState('E@Js#07Do=U$');
 
-
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        myKey: 'E@Js#07Do=U$'
-        
-    }
-  }
-  componentDidMount() {
-    
-    this.handleSubmit()
-  }
-
- 
-  handleSubmit(e) {
-    //e.preventDefault()
-    axios.post('/wabaSend/login', {password: this.state.myKey})
+  axios.post('/wabaSend/login', {password: myKey})
     .then(res=> {
-       localStorage.setItem('jwtToken', res.data.token)
-       axios.defaults.headers.common['Authorization'] =  'Bearer'+res.data.token
+      //quitar el token del localStorage
+      localStorage.setItem('jwtToken', res.data.token)
+      axios.defaults.headers.common['Authorization'] =  'Bearer'+res.data.token
     })
     .catch(err=>{
       localStorage.removeItem('jwtToken')
       if (err.response.status === 401) {
         let message = "Error validating your credentials"
-        this.props.error(message);
+        dispatch(errorsIn(message));
       }
       else {
-        this.props.error(err.response.statusText);
+        dispatch(errorsIn(err.response.statusText));
       }
 
-    })
-  }
- 
-  render(){
-  return (
-    <div>
-
-
-      
-    </div>
-  )
-  }
+  })
+  
 }
 
-const connected = connect(null, mapDispatchToProps)(Login);
-export default connected
+export default Login

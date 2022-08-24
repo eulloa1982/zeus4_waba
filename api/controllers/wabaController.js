@@ -1,5 +1,6 @@
 const { nextTick } = require("process");
 const axios = require("axios");
+
 // Send WhatsApp Template Message
 // hello_world
 exports.sendTemplateMessage = async(to, template_name, language) => {
@@ -41,7 +42,7 @@ exports.sendTemplateMessage = async(to, template_name, language) => {
  * @context     array(message_id: number)   if is a text reply message
  * 
 */
-exports.sendMessage = async(to, message, from, context = null) => {
+exports.sendTextMessage = async(to, message, from, context = null) => {
     // Default options are marked with *
     dataSend = {}
     dataSend.messaging_product = "whatsapp";
@@ -52,7 +53,6 @@ exports.sendMessage = async(to, message, from, context = null) => {
     if (context)
         dataSend.context = context;
     
-        console.log("prepared messags", dataSend)
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
                 url: `https://graph.facebook.com/v12.0/${from}/messages`, 

@@ -24,7 +24,10 @@ export function addOwnMessage(payloadSend) {
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                if (!isEmpty(response.error)){
+                if (!isObject(response.error)) {
+                    dispatch({type: ERROR_IN, payload: `Validation Error: ${response.data.instancePath} ${response.data.message}`})
+                }
+                else if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     payloadSend.error = response.error.message;
                     dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });

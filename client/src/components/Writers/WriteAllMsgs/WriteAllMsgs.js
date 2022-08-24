@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { find, isEmpty } from 'lodash';
 import { deleteAllMessages } from '../../../js/actions/index'
-import './WriteAllMsgs.css'
+import styles from './WriteAllMsgs.module.css'
 
 
 const WriteAllMsgs = (props) => {
@@ -22,7 +22,7 @@ const WriteAllMsgs = (props) => {
         return el.id === idMsg;
       })[0]
       if (!isEmpty(message_reply))
-        return message_reply.zeus4waba__w.substr(0,50);
+        return (`${message_reply.Created_Time.substr(0, 17)}:  ${message_reply.zeus4waba__w.substr(0,50)}`)
     }
       return null;
   }
@@ -34,10 +34,9 @@ const WriteAllMsgs = (props) => {
         (msg.zeus4waba__w !== null && msg.zeus4waba__w !== '') 
         ?
           <div class={msg.zeus4waba__Whatsapp_To !== null ? 'receiver' : 'sender'}>
-            {msg.zeus4waba__ReplyTo !== null ? <p class="receiver-message-reply">{selectMessage(msg.zeus4waba__ReplyTo)}...</p> : '' }
-            <span class="receiver-message">{msg.zeus4waba__w} </span>
-            <span class="align-right" onClick={() => dispatch(deleteAllMessages(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach" /></span>
-            <span class="align-right" onClick={() => setParams(msg.id, msg.zeus4waba__w)} ><img src="./images/reply.png" alt="attach" /></span>
+            {msg.zeus4waba__ReplyTo !== null ? <div className={styles.receiverMessageReply}>{selectMessage(msg.zeus4waba__ReplyTo)}...</div> : '' }           <span class="receiver-message">{msg.zeus4waba__w} </span>
+            <span className={styles.alignRight} onClick={() => dispatch(deleteAllMessages(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach" /></span>
+            <span className={styles.alignRight} onClick={() => setParams(msg.id, msg.zeus4waba__w)} ><img src="./images/reply.png" alt="attach" /></span>
                 {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>

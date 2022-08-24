@@ -43,7 +43,6 @@ function App() {
               ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
                 .then((dataMessage => {
                   getAllMessages(dataMessage.data)
-                  console.log('all messages', dataMessage.data)
                   setIsLoaded(true);
                 }))
             })
