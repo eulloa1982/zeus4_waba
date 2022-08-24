@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'
 import { addOwnMessage } from '../../js/actions/index'
 import { errorsIn } from "../../js/actions/errors";
 import "./Board.css";
@@ -11,297 +11,126 @@ import WMediaTemplate from "../WTemplates/WMediaTemplate/WMediaTemplate";
 import WTemplateBoard from "../WTemplates/WTemplateBoard/WTemplateBoard";
 import ShowReplyMsg from "../ShowReplyMsg/ShowReplyMsg";
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addOwnMessage: message => dispatch(addOwnMessage(message)),
-    errorsIn: message => dispatch(errorsIn(message))
-  };
-}
+const BoardComponent = (props) => {
+    const messages_in = useSelector(store => store.messages_in);
+    const dispatch = useDispatch();
 
-const mapStateToProps = state => {
-  return { messages_in: state.messages_in, to_prev_messages: state.to_prev_messages, from_prev_messages: state.from_prev_messages }
-}
+    const [message, setMessage] = React.useState('');
+    const [messageReply, setMessageReply] = React.useState('');
+    const [mobileTo, setMobileTo] = React.useState('');
+    const [showTextTemplateForm, setTextTplForm] = React.useState(false);
+    const [showMediaTemplateForm, setMediaTplForm] = React.useState(false);
+    const [showAllTemplates, setAllTemplates] = React.useState(false);
+    const [context, setContext] = React.useState({});
+    const [showReplyMsgView, setMsgReplyView] = React.useState(false);
+    const [template_board, setTemplateBoard] = React.useState('');
 
-class BoardComponent extends React.Component {
-  constructor(props) {
-    //window['initial']();
-    super(props)
-    this.state = { message: '', 
-                    messageReply: '',
-                    mobileTo: '',
-                    showTextTemplateForm: false,
-                    showMediaTemplateForm: false,
-                    showAllTemplates: false,
-                    context: {},
-                    showReplyMsgView: false
-                }
-    this.handleMessage = this.handleMessage.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.mobile = '';
-    this.fullname = window.fullname;
-  }
-
-  state = {
-    template_board: ''
-  }
-
-  handleMessage(event) {
-    this.setState({ message: event.target.value })
-    this.setState({showTextTemplateForm: false})
-    let value = event.target.value;
-
-    switch (value) {
-      case '/tpltext':
-        this.setState({showTextTemplateForm: true});
-        break;
-      case '/tplmedia':
-        this.setState({showMediaTemplateForm: true});
-        break;
-      case '/tplshow':
-        this.setState({showAllTemplates: true});
-        break;
-      default:
-        this.setState({
-                    showTextTemplateForm: false,
-                    showMediaTemplateForm: false,
-                    showAllTemplates: false,
-                  });
-        break;
-    }
-
+    const handleMessage = (event) => {
+        setMessage(event.target.value )
+        setTextTplForm(false)
+        let value = event.target.value;
     
-  }
-
-
-  handleSubmit(event) {
-    event.preventDefault()
-    if (isEmpty(this.props.mobile)) {
-      this.props.errorsIn ("No mobile detected in this contact");
-      throw new Error("No mobile configure")
+        switch (value) {
+          case '/tpltext':
+            setTextTplForm(true);
+            break;
+          case '/tplmedia':
+            setMediaTplForm(true);
+            break;
+          case '/tplshow':
+            setAllTemplates(true);
+            break;
+          default:
+            setTextTplForm(false)
+            setMediaTplForm(false)
+            setAllTemplates(false)
+            break;
+        }
+    
+        
     }
     
-    const data = {to: this.props.mobile, message: this.state.message, from: this.props.wabaId, context: this.state.context}
-    console.log("DATA", data)
-    
-    if (this.state.message !== '') {
-      if (this.messageRouter()) {
-        this.props.addOwnMessage({ to: this.props.mobile, message: this.state.message, from: this.props.wabaId, context: this.state.context });
-        this.setState({
-          message: '',
-          showReplyMsgView: false,
-          context: {},
-          messageReply: '',
-        });
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        if (isEmpty(props.mobile)) {
+            dispatch(errorsIn("No mobile detected in this contact"))
+            return
+        }
+            
+        if (message !== '') {
+          if (messageRouter()) {
+            dispatch(addOwnMessage({to: props.mobile, message: message, from: props.wabaId, context: context}))
+            setMessage('');
+            setMsgReplyView(false);
+            setContext({});
+            setMessageReply('');
+
+          }
+        }
+    }
+
+
+    const messageRouter = () => {
+      if (message.indexOf('/template') === 0) {
+        //temporal error
+        dispatch(errorsIn ("/template Message is not supported yet"));
+        return false;
       }
+      return true;
     }
-  }
 
-  //check message contain for specials chars combinations
-  messageRouter() {
-    const message = this.state.message
-    if (message.indexOf('/template') === 0) {
-      //temporal error
-      this.props.errorsIn ("/template Message is not supported yet");
-      return false;
+
+    const handleTemplate = (tmp) => {
+      setTemplateBoard(tmp)
+      setMessage(`/template ${tmp}`)
+      setAllTemplates(false)
     }
-    return true;
-  }
+  
+    //empty reply state when child says
+    const emptyShowReply = () => {
+      setContext({});
+      setMessageReply('');
+      setMsgReplyView(false)
+    }
 
-  //wtemplateboard callback function
-  //set /template type message
-  handleTemplate = (tmp) => {
-    this.setState({template_board: tmp})
-    this.setState({
-      message: `/template ${tmp}`,
-      showAllTemplates: false
-    })
-  }
+    //writeallmsg callback function
+    //set the id of msg to reply
+    const handleReplyMsg = (idMsg, message) => {
+      setContext({'message_id': idMsg});
+      setMessageReply(message);
+      setMsgReplyView(true)
+    }
 
-  //writeallmsg callback function
-  //set the id of msg to reply
-  handleReplyMsg = (idMsg, message) => {
-    this.setState({
-      context: {
-        'message_id': idMsg
-      },
-      messageReply: message,
-      showReplyMsgView: true
-    })
-  }
 
-  render() {
-    return(
-      <div id='columna2' class="main">
-        <div class="chat-window">
-          <WTemplate visible={this.state.showTextTemplateForm} />
-          <WMediaTemplate visible={this.state.showMediaTemplateForm} />
-          <WTemplateBoard handlerTemp={this.handleTemplate} visible={this.state.showAllTemplates} />
-          <Error />
-          <WriteAllMsgs handlerReply={this.handleReplyMsg} /> 
-          <ShowReplyMsg visible={this.state.showReplyMsgView} message={this.state.messageReply} />        
-          
-        </div>
-          
-        <div class="type-message-bar">
-          <div class="type-message-bar-center">
-            <input
-              type="text"
-              name=""
-              id="comment"
-              placeholder="Send a message"
-              value={this.state.message}
-              onChange={this.handleMessage}
-            />
-          </div>
-          <div class="type-message-bar-right">
-            <img src="images/whatsapp-send-1.png" alt="Send" onClick={this.handleSubmit}/>
-          </div>
-        </div>
-      </div>
-      )
-    } 
-}
-
-const connected = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
-export default connected;
-
-  /*
-  <div class="main">
-          <div class="chat-window-header">
-            <div class="chat-window-header-left">
-              <div class="contact-name-and-status-container">
-              <span class="chat-window-contact-name"></span>
-              </div>
-            </div>
-            <div class="chat-window-header-right">
-              <img class="chat-window-search-icon" src="images/search-icon.svg" alt="attach" />
-              <img class="chat-window-menu-icon" src="images/menu-icon.svg" alt="attach" />
-            </div>
-          </div>
+    return (
+        <div id='columna2' class="main">
           <div class="chat-window">
-            
-            
-            
-            {this.props.messages_in.map(post => (
-                <div class="sender">
-                  <span class="sender-message">{post.message} </span>
-                  <span class="message-time">21:32</span>
-                  {isEmpty(post.error) ? 
-                    (
-                      <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
-                    ) 
-                    : 
-                    (
-                      <span class="message-status"><img src="./images/status.svg" alt="attach" /></span>
-                    )}
-                </div>
-            ))}
+            <WTemplate visible={showTextTemplateForm} />
+            <WMediaTemplate visible={showMediaTemplateForm} />
+            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} />
+            <Error />
+            <WriteAllMsgs handlerReply={handleReplyMsg} /> 
+            <ShowReplyMsg handlerVisibility={emptyShowReply} visible={showReplyMsgView} message={messageReply} />        
           </div>
           
           <div class="type-message-bar">
-            <div class="type-message-bar-left">
-              <img src="images/icons.svg" alt="icon"/>
-              <img src="images/attach-icon.svg" alt="attach" />
-            </div>
             <div class="type-message-bar-center">
               <input
-                type="text"
-                name=""
-                id="comment"
-                placeholder="Send a message"
-                value={this.state.message}
-                onChange={this.handleMessage}
+                    type="text"
+                    name=""
+                    id="comment"
+                    placeholder="Send a message"
+                    value={message}
+                    onChange={handleMessage}
               />
             </div>
             <div class="type-message-bar-right">
-              <img src="images/whatsapp-send-1.png" alt="Send" onClick={this.handleSubmit}/>
+              <img src="images/whatsapp-send-1.png" alt="Send" onClick={handleSubmit}/>
             </div>
-            
           </div>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  {this.props.messages_in.map(post => (
-            <li key={post.mobile}>Sending {post.message} To: {post.mobile}</li>
-          ))}
-          
-          
-          <div class="sender">
-              <span class="sender-message-tail"><img src="images/message-tail-sender.svg" alt="attach"/></span>
-              <span class="sender-message">I'm good, but I'm sooo bored ðŸ¥±ðŸ¥±ðŸ¥±</span>
-              <span class="message-time">21:35</span>
-              <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach"/></span>
-            </div>
-            <div class="receiver">
-              <span class="receiver-message-tail">
-                <img src="images/message-tail-receiver.svg" alt="attach"/>
-              </span>
-              <span class="receiver-message">Check this out...</span>
-              <span class="message-time">21:36</span>
-            </div>
-            <div class="receiver image-message">
-              <span class="receiver-message"><img src="./images/meme-coding.png" alt="attach"/></span>
-              <span class="message-time">21:36</span>
-            </div>
-            <div class="receiver receiver-audio-message">
-              <div class="audio-message">
-                <div class="audio-message-left">
-                  <img src="images/play-audio-icon.svg" alt="attach"/>
-                </div>
-                <div class="audio-message-center">
-                  <div class="audio-message-center-top">
-                    <span class="audio-message-bar"></span>
-                    <input type="range" min="0" max="100" value="75" />
-                  </div>
-                  <div class="audio-message-center-bottom">
-                    <div class="audio-message-bottom">
-                      <span class="audio-message-length">1:15</span>
-                      <span class="message-time">21:36</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="audio-message-right">
-                  <img class="audio-message-contact-image" src="images/timmy-m-harley.jpg" alt="attach"/>
-                  <img class="audio-message-microphone" src="./images/microphone-seen.svg" alt="attach" />
-                </div>
-              </div>
-            </div>
-            <div class="sender">
-              <span class="sender-message-tail"><img src="images/message-tail-sender.svg" alt="attach" /></span>
-              <span class="sender-message">hahahahaaha</span>
-              <span class="message-time">21:39</span>
-              <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
-            </div>
-          
-          
-          
-          
-          */
+      </div>
+    )
+}
+
+export default BoardComponent

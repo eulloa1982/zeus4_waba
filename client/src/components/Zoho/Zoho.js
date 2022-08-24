@@ -22,7 +22,6 @@ function App() {
   useEffect(() => {
     
     async function init() {
-      try{
 
         await ZOHO.embeddedApp.on("PageLoad",function(data) {
           //Custom Bussiness logic goes here
@@ -59,11 +58,9 @@ function App() {
           
           return await ZOHO.embeddedApp.init();
 
-      }catch(e){
-        console.log(e)
       }
 
-    }
+
     init();
 
 }, [])
