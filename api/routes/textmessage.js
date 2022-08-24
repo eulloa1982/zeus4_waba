@@ -124,6 +124,7 @@ router.post("/", asyncHandler(async function(req, res) {
         })
 }));
 
+//Default 404 route
 router.post('*', (req, res) => {
     res.status(404).send('what???');
   });

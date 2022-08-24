@@ -87,6 +87,7 @@ const BoardComponent = (props) => {
       setAllTemplates(false)
     }
   
+    //Ver como sustituir esto
     //empty reply state when child says
     const emptyShowReply = () => {
       setContext({});
@@ -106,7 +107,7 @@ const BoardComponent = (props) => {
     return (
         <div id='columna2' class="main">
           <div class="chat-window">
-            <WTemplate visible={showTextTemplateForm} />
+            <WTemplate visible={showTextTemplateForm} wabaId={props.wabaId} />
             <WMediaTemplate visible={showMediaTemplateForm} />
             <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} />
             <Error />

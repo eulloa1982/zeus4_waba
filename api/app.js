@@ -7,10 +7,10 @@ var { expressjwt: jwt } = require("express-jwt");
 
 
 var indexRouter = require('./routes/index');
-var wabaRouter = require("./routes/wabasend");
-var wabaTemplate = require("./routes/wabatemplate")
-var wabaMessage = require("./routes/wabamessage")
-var wabaGetTemplates = require("./routes/wabagettemplates")
+var sendTemplate = require("./routes/sendtemplate");
+var createTemplate = require("./routes/createtemplate");
+var getTemplates = require("./routes/gettemplates");
+var textMessage = require("./routes/textmessage");
 
 var app = express();
 
@@ -29,10 +29,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
-app.use("/wabasend", wabaRouter);
-app.use("/wabatemplate", wabaTemplate);
-app.use("/wabamessage", wabaMessage);
-app.use("/gettemplates", wabaGetTemplates);
+app.use("/sendtemplate", sendTemplate);
+app.use("/createtemplate", createTemplate);
+app.use("/gettemplates", getTemplates);
+app.use("/textmessage", textMessage);
 
 //app.use("/token", tokenRouter);
 

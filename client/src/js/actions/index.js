@@ -20,7 +20,7 @@ export function addOwnMessage(payloadSend) {
             body: JSON.stringify(payloadSend)
             
             };
-        return fetch("/wabaMessage", options)
+        return fetch("/textmessage", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
@@ -62,11 +62,14 @@ export function sendTemplate(payload) {
             body: JSON.stringify(payload)
             
             };
-        return fetch("/wabaTemplate", options)
+        return fetch("/createtemplate", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                if (!isEmpty(response.error)){
+                if (!isObject(response.error)) {
+                    dispatch({type: ERROR_IN, payload: `Validation Error: ${response.data.instancePath} ${response.data.message}`})
+                }
+                else if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    

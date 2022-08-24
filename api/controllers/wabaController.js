@@ -94,12 +94,12 @@ exports.getMessagesTemplates = async() => {
 
 
 // Create a Text Template to WhastApp
-exports.createTextTemplate = async(template_name, language, category, template_text) => {
+exports.createTextTemplate = async(template_name, language, category, template_text, waba_id) => {
     // Default options are marked with *
     dataSend = { "name": template_name, "language": language, "category": category, "components": [{ "type": "BODY", "text": template_text }] };
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/100698539410392/message_templates`, 
+                url: `https://graph.facebook.com/v12.0/${waba_id}/message_templates`, 
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',

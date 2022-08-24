@@ -26,9 +26,11 @@ const WTemplate = (props) => {
       template_name: data.title,
       language: data.language,
       category: data.category,
-      template_text: data.message_text
+      template_text: data.message_text,
+      from: props.wabaId
 
     }
+
     dispatch(sendTemplate({ ...object}))
 
   }
