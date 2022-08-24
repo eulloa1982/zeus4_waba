@@ -97,11 +97,14 @@ router.all("*", validateToken);
 /**
  * send a text message
  * /wabamessage endpoint
- * @{"to": 'phone_destination', "message": "message",
- * "from": 'waba ID Number', 
- * "context": {"message_id": "message_reply_id"}}
+ * body data
+ * @to 'phone_destination'
+ * @message "message"
+ * @from 'waba ID Number'
+ * @context {"message_id": "message_reply_id"}}
  * please check textMsgSchema to validate fields
- * */
+ * 
+ */
 router.post("/", asyncHandler(async function(req, res) {
     const validate = ajv.compile(textMsgSchema)
     const valid = validate(req.body)
