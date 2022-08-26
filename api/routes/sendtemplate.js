@@ -3,14 +3,44 @@ var router = express.Router();
 const waba = require("../controllers/wabaController.js");
 var { expressjwt: expressJwt } = require("express-jwt");
 const jwt = require('jsonwebtoken');
-const { validateToken, generateAccessToken, login } = require("../middlewares/validateToken");
+const { validateToken } = require("../middlewares/validateToken");
 const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
+const Ajv = require("ajv")
 
-
-const passwordHash = '$2b$10$ET29p5cc4nAGsfVkPNrFQ.4ZhyUAQitnKGRkoXdqWmpQsUlJnsJXu'
-const privateKey= 'mykey'
-const username = 'myuser'
+/**********   Text Message Schema   ******** */
+const templateTextMsgSchema = {
+    type: "object",
+    properties: {
+      to: {
+        type: "string",
+        description: "Number destination",
+        minLength: 5
+      },
+      template_name: {
+        type: "string",
+        description: "Text Message",
+        minLength: 1
+      },
+      from: {
+        type: "string",
+        description: "waba id from number",
+        minLength: 5
+        //pattern: "/^\\d+$/"
+        //minLength: 8,
+        //maxLength: 24,
+      },
+      language: {
+        type: "string",
+        minLength: 1, 
+        description: "language"
+      }
+    },
+    required: ["to", "template_name", "from", "language"],
+    additionalProperties: false,
+};
+  
+const ajv = new Ajv()
 
 //wrapper around async middleware
 const asyncHandler = fn => (req, res, next) => {
@@ -19,41 +49,6 @@ const asyncHandler = fn => (req, res, next) => {
         .catch(next);
 };
 
-/* initial path */
-router.post("/login", asyncHandler(async function(req, res) {
-    const { password } = req.body;
-    try{
-        /** One way, can't decrypt but can compare */
-        var salt = bcrypt.genSaltSync(10);
-
-        /** Encrypt password */
-        bcrypt.hash('E@Js#07Do=U$', salt, (err, res) => {
-            hash = res
-        });
-
-
-        token = null
-        if(password) {
-          let match  = await bcrypt.compare(password,passwordHash)
-          if (match)
-            token = await jwt.sign({ password }, privateKey,{ expiresIn: '1h'})
-        }
-
-        if(token) {
-            return res.json({token:token})
-        }
-        else {
-            console.log("Unan access")
-            return res.status(401).send(
-                {error: "Unauthorized access"}
-            )
-        }
-       } 
-       catch(err) {
-        console.log(err)
-        return res.sendStatus(500)
-       }
-}));
 
 router.get("/", function(req, res, next) {
     res.send("API is working properly");
@@ -64,22 +59,37 @@ router.all("*", validateToken);
 
 
 
-/* 
-/wabaSend 
-send whatsapp message
-@from WhatsApp business number
-@to recipient
-@message text message
+/**
+/sendtemplate
+* send whatsapp template text message
+@param {string} from numeric WhatsApp business number
+@param {string} to recipient
+@param {string} message text message
+@param {string} language
 */
 router.post("/", asyncHandler(async function(req, res) {
-    const { to, template_name, language } = req.body
-    let sendMessage = await waba.sendTemplateMessage(to, template_name, language)
+    const validate = ajv.compile(templateTextMsgSchema)
+    const valid = validate(req.body)
+    if (!valid) {
+        res.status(300).send({
+            error: {'message': validate.errors[0].message},
+        })
+    }
+
+    const { to, template_name, from, language } = req.body
+    let sendMessage = await waba.sendTemplateMessage(to, template_name, language, from)
         .then(message => {
             res.status(200).send({
                 data: message
             })
         })
 }));
+
+//Default 404 route
+router.post('*', (req, res) => {
+    res.status(404).send('what???');
+  });
+  
 
 
 module.exports = router;
