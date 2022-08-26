@@ -19,14 +19,17 @@ const textMsgSchema = {
       to: {
         type: "string",
         description: "Number destination",
+        minLength: 5
       },
       message: {
         type: "string",
         description: "Text Message",
+        minLength: 1
       },
       from: {
         type: "string",
         description: "waba id from number",
+        minLength: 5
         //pattern: "/^\\d+$/"
         //minLength: 8,
         //maxLength: 24,
@@ -51,8 +54,14 @@ const asyncHandler = fn => (req, res, next) => {
         .catch(next);
 };
 
-/* login app */
-router.post("/login", asyncHandler(async function(req, res) {
+/**
+ * login to app
+ * /textmessage/login
+ * body data
+ * @password expecific password
+ * 
+ */
+ router.post("/login", asyncHandler(async function(req, res) {
     const { password } = req.body;
     try{
         /** One way, can't decrypt but can compare */

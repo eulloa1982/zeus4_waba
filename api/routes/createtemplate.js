@@ -49,8 +49,6 @@ const textTemplateSchema = {
 const ajv = new Ajv()
 
 
-
-
 //wrapper around async middleware
 const asyncHandler = fn => (req, res, next) => {
     return Promise
@@ -65,7 +63,7 @@ router.get("/", function(req, res, next) {
 });
 
 //protect all other routes
-//router.all("*", validateToken);
+router.all("*", validateToken);
 
 
 router.post("/", asyncHandler(async function(req, res) {
@@ -79,7 +77,7 @@ router.post("/", asyncHandler(async function(req, res) {
     }
 
     const { template_name, language, category, template_text, from } = req.body
-    let sendMessage = await waba.createTextTemplate(template_name, language, category, template_text)
+    let sendMessage = await waba.createTextTemplate(template_name, language, category, template_text, from)
         .then(message => {
             res.status(200).send({
                 data: message

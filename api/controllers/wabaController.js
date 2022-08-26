@@ -3,7 +3,7 @@ const axios = require("axios");
 
 // Send WhatsApp Template Message
 // hello_world
-exports.sendTemplateMessage = async(to, template_name, language) => {
+exports.sendTemplateMessage = async(to, template_name, language, from) => {
     // Default options are marked with *
     dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
                 "to": to, "type": "template", 
@@ -17,7 +17,7 @@ exports.sendTemplateMessage = async(to, template_name, language) => {
             };
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/100698539410392/messages`, 
+                url: `https://graph.facebook.com/v12.0/${from}/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -36,10 +36,10 @@ exports.sendTemplateMessage = async(to, template_name, language) => {
 
 /**
  * send a normal whatsapp text message 
- * @to          string                      number destination
- * @message     string                      text message
- * @from        string                      WABA Number ID
- * @context     array(message_id: number)   if is a text reply message
+ * @param {string} to number destination
+ * @param {string} message text message
+ * @param {string} from WABA Number ID
+ * @param {object} context array(message_id: number) - if is a text reply message
  * 
 */
 exports.sendTextMessage = async(to, message, from, context = null) => {
@@ -72,12 +72,14 @@ exports.sendTextMessage = async(to, message, from, context = null) => {
     
 };
 
-
-/**get templates in whatsapp */
-exports.getMessagesTemplates = async() => {
+/**
+ * Get WhatsApp templates
+ * @param {string} from numeric waba id 
+ */
+exports.getMessagesTemplates = async(from) => {
     const response = await axios({
                 method: 'GET', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/100698539410392/message_templates`, 
+                url: `https://graph.facebook.com/v12.0/${from}/message_templates`, 
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,9 +93,14 @@ exports.getMessagesTemplates = async() => {
 };
 
 
-
-
-// Create a Text Template to WhastApp
+/**
+ * Create WhatsApp Text Template
+ * @param {string} template_name 
+ * @param {string} language 
+ * @param {string} category 
+ * @param {string} template_text 
+ * @param {string} waba_id (numeric)
+ */
 exports.createTextTemplate = async(template_name, language, category, template_text, waba_id) => {
     // Default options are marked with *
     dataSend = { "name": template_name, "language": language, "category": category, "components": [{ "type": "BODY", "text": template_text }] };
