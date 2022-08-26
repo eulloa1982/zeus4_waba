@@ -119,8 +119,7 @@ router.post("/", asyncHandler(async function(req, res) {
     const valid = validate(req.body)
     if (!valid) {
         res.status(300).send({
-            error: true,
-            data: validate.errors[0]
+            error: {'message': validate.errors[0].message},
         })
     }
     

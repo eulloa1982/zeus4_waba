@@ -23,18 +23,15 @@ export function addOwnMessage(payloadSend) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer: ${token}`
-              },
+            },
             body: JSON.stringify(payloadSend)
             
-            };
+        };
         return fetch("/textmessage", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                if (!isObject(response.error)) {
-                    dispatch({type: ERROR_IN, payload: `Validation Error: ${response.data.instancePath} ${response.data.message}`})
-                }
-                else if (isObject(response.error) && !isEmpty(response.error)){
+                if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     payloadSend.error = response.error.message;
                     dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
@@ -74,18 +71,15 @@ export function sendTemplate(payload) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer: ${token}`
-              },
+            },
             body: JSON.stringify(payload)
             
-            };
+        };
         return fetch("/createtemplate", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                if (!isObject(response.error)) {
-                    dispatch({type: ERROR_IN, payload: `Validation Error: ${response.data.instancePath} ${response.data.message}`})
-                }
-                else if (isObject(response.error) && !isEmpty(response.error)){
+                if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
@@ -102,7 +96,11 @@ export function sendTemplate(payload) {
 }
 
 
-/**get approved templates from whatsapp */
+/**
+ * 
+ * @param {object} payload {from: waba-id-number}
+ * @returns 
+ */
 export function getTemplates(payload) {
     return dispatch => {
         const token = localStorage.getItem('jwtToken')
@@ -112,9 +110,10 @@ export function getTemplates(payload) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer: ${token}`
-              },
+            },
+            body: JSON.stringify(payload)
             
-            };
+        };
 
         return fetch("/gettemplates", options)
             .then(res => res.json())

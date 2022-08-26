@@ -80,7 +80,7 @@ router.post("/", asyncHandler(async function(req, res) {
     let sendMessage = await waba.createTextTemplate(template_name, language, category, template_text, from)
         .then(message => {
             res.status(200).send({
-                data: message
+                error: {'message': validate.errors[0].message},
             })
         })
 }));
