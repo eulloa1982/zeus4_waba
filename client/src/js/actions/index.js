@@ -54,7 +54,7 @@ export function addOwnMessage(payloadSend) {
 
 
 /**
- * 
+ * Create a Text Template
  * @param {template_name, language, category, template_text, from} payload 
  * @template_name string (numeric)
  * @language string

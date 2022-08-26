@@ -3,7 +3,7 @@ var router = express.Router();
 const waba = require("../controllers/wabaController.js");
 var { expressjwt: expressJwt } = require("express-jwt");
 const jwt = require('jsonwebtoken');
-const { validateToken, generateAccessToken, login } = require("../middlewares/validateToken");
+const { validateToken } = require("../middlewares/validateToken");
 const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
 
