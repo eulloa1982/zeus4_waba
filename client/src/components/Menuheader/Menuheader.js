@@ -1,9 +1,19 @@
 import { isEmpty } from 'lodash';
-import React from 'react';
+import React, {useState} from 'react';
+import DealForm from '../DealForm/DealForm';
 import './Menuheader.css';
 
-const Menuheader = (props) => (
+const Menuheader = (props) => {
+  const [visible, setVisible] = useState(false)
+
+  const showDealForm = () => {
+    console.log(`Account ${props.usrAll.Account_Name.name}`)
+    setVisible(true)
+  } 
+
+  return (
   <div id="left-column">
+    <DealForm visible={visible} data={props.usrAll}/>
     <div class="sidebar-notifications">
       <img src="images/notifications.svg" alt="Default img"/>
         <div class="sidebar-notifications-message">
@@ -50,60 +60,19 @@ const Menuheader = (props) => (
             <a href="#"><img src='./images/state-2.png' alt='mobile' />{props.usrAll.State}</a><br />
             <a href="#"><img src='./images/location-2.png' alt='mobile' />{props.usrAll.City}, {props.usrAll.Street}</a>
           </div>
+          <div class="card" onClick={showDealForm}>
+            <p><i class="fas fa-briefcase stroke-transparent"></i>&nbsp;&nbsp;&nbsp;Set a Deal</p>
+          </div>
           
         </div>
-        
-
     </div>
-
-
-
-
-    
   </div>
+  )
    
-);
+  }
 
 Menuheader.propTypes = {};
 
 Menuheader.defaultProps = {};
 
 export default Menuheader;
-
-/*
-<div class="sidebar-header">
-    
-      
-      
-      
-      <img src="./images/no-user.jpg" alt="attach"/>
-      <span class="contact-data">{props.usrAll.Full_Name}</span>
-      <div class="sidebar-header-icons">
-        <img src="images/status.svg" alt="Default img" />
-        <img src="images/message-icon.svg" alt="Default img" />
-        <img src="images/menu-icon.svg" alt="Default img"  />
-      </div>
-    </div>
-    
-    
-
-
-
-
-    <div className='contact-data'>
-      <span><strong>Account Name: </strong></span><span class="contact-data">{!isEmpty(props.usrAll.Account_Name) ? props.usrAll.Account_Name.name : 'No account associated'}</span><br />
-      <span><strong>Mobile: </strong></span><span class="contact-data">{props.usrAll.Mobile}</span><br />
-      <span><strong>Title: </strong></span><span class="contact-data">{props.usrAll.Title}</span><br />
-      <span><strong>Lead Source: </strong></span><span class="contact-data">{props.usrAll.Lead_Source}</span><br />
-      <span><strong>Created Time: </strong></span><span class="contact-data">{props.usrAll.Created_Time}</span><br />
-      <span><strong>Last Activity Time: </strong></span><span class="contact-data">{props.usrAll.Last_Activity_Time}</span>
-      <span><h3>Address</h3>
-        <span><strong>City: </strong></span><span className='contact-data'>{props.usrAll.City}</span><br />
-        <span><strong>State: </strong></span><span className='contact-data'>{props.usrAll.State}</span><br />
-        <span><strong>Street: </strong></span><span className='contact-data'>{props.usrAll.Street}</span><br />
-      </span>
-
-    </div>
-
-*/
-
