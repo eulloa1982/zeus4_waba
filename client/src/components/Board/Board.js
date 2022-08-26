@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { addOwnMessage } from '../../js/actions/index'
+import { addOwnMessage, sendTemplate } from '../../js/actions/index'
 import { errorsIn } from "../../js/actions/errors";
 import "./Board.css";
 import { isEmpty } from 'lodash';
@@ -73,8 +73,10 @@ const BoardComponent = (props) => {
 
     const messageRouter = () => {
       if (message.indexOf('/template') === 0) {
-        //temporal error
-        dispatch(errorsIn ("/template Message is not supported yet"));
+        //get template name from input /template template_name
+        const input_name = message.split(" ")
+        const template_name = input_name[1];
+        dispatch(sendTemplate({"to":props.mobile, "template_name": `${template_name}`, "language":"en_US", "from": props.wabaId}))
         return false;
       }
       return true;

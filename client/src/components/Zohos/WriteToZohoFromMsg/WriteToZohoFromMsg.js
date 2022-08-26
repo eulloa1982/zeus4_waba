@@ -10,11 +10,6 @@ function WriteToZohoFromMsg(props) {
     const dispatch = useDispatch()
     const last_in_message = last(messages)
 
-    let status = '';
-    //set type of message between successfully and unsuccessfully delivered
-    if (last_in_message !== '') {
-      status = 'error'
-    }
 
     const context = !isEmpty(last_in_message.context) ? last_in_message.context.message_id : ''
     
@@ -22,8 +17,9 @@ function WriteToZohoFromMsg(props) {
     if (last_in_message.message !== '' && last_in_message.message !== null) {
       const data = {'Name': props.user, 'zeus4waba__Whatsapp_From': props.user, 
                 'zeus4waba__w': `${last_in_message.message}`, 
-                'zeus4waba__Whatsapp_Status': `${status}`,
-                'zeus4waba__ReplyTo': `${context}`}
+                'zeus4waba__Whatsapp_Status': `${last_in_message.status}`,
+                'zeus4waba__Whatsapp_MessageID': `${last_in_message.messageID}`}
+
 
       ZOHO.CRM.API.insertRecord({Entity: 'zeus4waba__Whatsapps', APIData: data})
         .then((dataMessage => {

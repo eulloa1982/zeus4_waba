@@ -1,7 +1,7 @@
 import { isObject } from 'lodash';
 import { isEmpty } from 'lodash';
 import { ERROR_IN, 
-        OWN_MESSAGE_IN, 
+        OWN_MESSAGE_OUT, 
         ALL_MSG,
         DELETE_ALL_MSG
     } from '../constants';
@@ -31,17 +31,20 @@ export function addOwnMessage(payloadSend) {
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
+                console.log("Data cactched in fron end", response)
+
+
                 if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     payloadSend.error = response.error.message;
-                    dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                    dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
                     //aqui debo devolver el objeto de respuesta de whatsapp
                     //buscando capturar el ID de mensaje que envia Whatsapp
                     //que seria el response
-                    dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                    dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 }
                 
             })
@@ -53,6 +56,52 @@ export function addOwnMessage(payloadSend) {
 }
 
 
+export function sendTemplate(payload) {
+    return dispatch => {
+        const token = localStorage.getItem('jwtToken')
+        const options = {
+            method: `POST`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer: ${token}`
+            },
+            body: JSON.stringify(payload)
+            
+        };
+        return fetch("/sendtemplate", options)
+            .then(res => res.json())
+            .then(json => {
+                let response = {...json}
+                if (isObject(response.data)) {
+                    //all ok, get whatsapp id
+                    const message_id = response.data.messages[0].id;
+                    payload.messageID = message_id
+                    payload.message = `Template message: ${payload.template_name}`
+                    payload.status = 'success'
+                    console.log("Payload", payload)
+                    dispatch({ type: OWN_MESSAGE_OUT, payload: payload });
+                }
+                else if (isObject(response.error) && !isEmpty(response.error)){
+                    dispatch({type: ERROR_IN, payload: response.error.message});
+                } else if (isObject(response.errors)){
+                    dispatch({type: ERROR_IN, payload: response.errors.message});                    
+                } else {
+                   console.log("SUMATORI", response)
+                }
+                
+            })
+            .catch(err => {
+                dispatch({type: ERROR_IN, payload: 'Unknown error'});
+                console.log('Error action', err)
+            })
+    }
+}
+
+
+
+
+
 /**
  * Create a Text Template
  * @param {template_name, language, category, template_text, from} payload 
@@ -62,7 +111,7 @@ export function addOwnMessage(payloadSend) {
  * @template_text string
  * @from string (numeric)
  */
-export function sendTemplate(payload) {
+export function createTemplate(payload) {
     return dispatch => {
         const token = localStorage.getItem('jwtToken')
         const options = {
@@ -84,7 +133,7 @@ export function sendTemplate(payload) {
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
-                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                    //dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 }
                 
             })
@@ -122,11 +171,11 @@ export function getTemplates(payload) {
                 if (!isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     //payload.error = response.error.message;
-                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                    //dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
-                    //dispatch({ type: OWN_MESSAGE_IN, payload: payloadSend });
+                    //dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 }
                 
             })

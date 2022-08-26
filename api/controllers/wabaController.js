@@ -3,9 +3,15 @@ const axios = require("axios");
 
 // Send WhatsApp Template Message
 // hello_world
-exports.sendTemplateMessage = async(to, template_name, language, from) => {
+exports.sendTemplateMessage = async(req, res, next) => {
+    
     // Default options are marked with *
     dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
+            "to": req.body.to, "type": 'template', 
+            "template": { "name": `${req.body.template_name}`, "language": { "code": `${req.body.language}` } }
+    }
+   
+    /* dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
                 "to": to, "type": "template", 
                 "template": { "name": `${template_name}`, "language": { "code": `${language}` } },
                 "components": [{ "type": "body",
@@ -14,22 +20,26 @@ exports.sendTemplateMessage = async(to, template_name, language, from) => {
                                     {"type": "currency", "currency": {"fallback_value": "$100.99", "code": "USD", "amount_1000": 100990 }}
                                 ]
                             }]
-            };
+            };*/
+
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/${from}/messages`, 
+                url: `https://graph.facebook.com/v14.0/${req.body.from}/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
+                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
     })
-    .then(data => {
-        return (JSON.stringify(dataSend))
+    .then(response => {
+        console.log("Response backend data", response)
+        res.status(200).send({
+            data: response.data
+        })
     })
     
 };
@@ -52,22 +62,22 @@ exports.sendTextMessage = async(to, message, from, context = null) => {
     dataSend.text = {'preview_url': false, 'body': message ? message : ''};
     if (context)
         dataSend.context = context;
-    
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/${from}/messages`, 
+                url: `https://graph.facebook.com/v14.0/${from}/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
+                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
     })
     .then(data => {
-        return (JSON.stringify(dataSend))
+        console.log('Data returned backend', data.data)
+        return (JSON.stringify(data.data))
     })
     
 };
@@ -83,11 +93,12 @@ exports.getMessagesTemplates = async(from) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
+                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
                 },
     })
     .then(data => {
-        return (JSON.stringify(data))
+        console.log(data)
+        //return (JSON.stringify(data))
     })
     
 };
@@ -110,7 +121,7 @@ exports.createTextTemplate = async(template_name, language, category, template_t
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPEP24ahzZBZBua3PcVZBlANNEWWvARyuZB6huYnOODNgc3C5H06bMDf5btuZBrQZCzbNrEzgTUGgQZAVicNZAsGEruea2IQi0XNB13QVbGo60srjEkDsJDHJZAQBFs01r1i4iO84ZCfqqSKCZAwQLfP1JaDGEk6zv3CJP7rr5T6fPZCIYw74saYVixeopWwoZC1xF7ri9g89ITR7',
+                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
                 },
                 data: JSON.stringify(dataSend)
     })

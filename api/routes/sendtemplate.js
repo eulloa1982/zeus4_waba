@@ -7,6 +7,7 @@ const { validateToken } = require("../middlewares/validateToken");
 const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
 const Ajv = require("ajv")
+const axios = require("axios");
 
 /**********   Text Message Schema   ******** */
 const templateTextMsgSchema = {
@@ -67,7 +68,8 @@ router.all("*", validateToken);
 @param {string} message text message
 @param {string} language
 */
-router.post("/", asyncHandler(async function(req, res) {
+
+router.post("/", asyncHandler(async function(req, res, next) {
     const validate = ajv.compile(templateTextMsgSchema)
     const valid = validate(req.body)
     if (!valid) {
@@ -76,13 +78,8 @@ router.post("/", asyncHandler(async function(req, res) {
         })
     }
 
-    const { to, template_name, from, language } = req.body
-    let sendMessage = await waba.sendTemplateMessage(to, template_name, language, from)
-        .then(message => {
-            res.status(200).send({
-                data: message
-            })
-        })
+    let sendMessage = await waba.sendTemplateMessage(req, res, next)
+    
 }));
 
 //Default 404 route

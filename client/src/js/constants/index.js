@@ -1,5 +1,5 @@
 /* own message in */
-export const OWN_MESSAGE_IN = "OWN_MESSAGE_IN";
+export const OWN_MESSAGE_OUT = "OWN_MESSAGE_OUT";
 /* receipt message from client */
 export const ERROR_IN = "ERROR_IN";
 /* CRM prev messages */

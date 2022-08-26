@@ -11,6 +11,7 @@ var sendTemplate = require("./routes/sendtemplate");
 var createTemplate = require("./routes/createtemplate");
 var getTemplates = require("./routes/gettemplates");
 var textMessage = require("./routes/textmessage");
+const { isObject } = require('util');
 
 var app = express();
 
@@ -58,8 +59,11 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // send back an easily understandable error message to the caller
-  //console.log(err)
-  res.status(500).send(err.response.data)
+  //console.log('Backend Error', err.response.data.error.message)
+  //if (err.response.data instanceof Object)
+    res.status(500).send(err.response.data)
+  //else
+    //res.status(500).send(err.data)
   //res.render('error');
 });
 

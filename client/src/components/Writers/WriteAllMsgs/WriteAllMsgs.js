@@ -18,8 +18,8 @@ const WriteAllMsgs = (props) => {
       const message_reply = all_messages.filter(function (el) {
         //esta es la linea correcta, cuando recupere el ID del msg desde Whatsapp 
         //y lo agregue aqui
-        //return el.zeus4waba__Whatsapp_MessageID === idMsg;
-        return el.id === idMsg;
+        return el.zeus4waba__Whatsapp_MessageID === idMsg;
+        //return el.id === idMsg;
       })[0]
       if (!isEmpty(message_reply))
         return (`${message_reply.Created_Time.substr(0, 17)}:  ${message_reply.zeus4waba__w.substr(0,50)}`)
@@ -37,7 +37,7 @@ const WriteAllMsgs = (props) => {
             {msg.zeus4waba__ReplyTo !== null ? <div className={styles.receiverMessageReply}>{selectMessage(msg.zeus4waba__ReplyTo)}...</div> : '' }           <span class="receiver-message">{msg.zeus4waba__w} </span>
             <span className={styles.alignRight} onClick={() => dispatch(deleteAllMessages(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach" /></span>
             <span className={styles.alignRight} onClick={() => setParams(msg.id, msg.zeus4waba__w)} ><img src="./images/reply.png" alt="attach" /></span>
-                {isEmpty(msg.zeus4waba__Whatsapp_Status) ? 
+                { msg.zeus4waba__Whatsapp_Status === 'success' ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
                 ) 

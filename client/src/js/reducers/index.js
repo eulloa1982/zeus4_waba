@@ -1,4 +1,4 @@
-import { OWN_MESSAGE_IN, 
+import { OWN_MESSAGE_OUT, 
         ERROR_IN, 
         ALL_MSG,
         DELETE_ALL_MSG
@@ -15,7 +15,7 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
   switch(action.type)  {
-    case OWN_MESSAGE_IN: {
+    case OWN_MESSAGE_OUT: {
       return Object.assign({}, state, {
         messages_out: state.messages_out.concat(action.payload)
       });
