@@ -114,7 +114,7 @@ router.all("*", validateToken);
  * please check textMsgSchema to validate fields
  * 
  */
-router.post("/", asyncHandler(async function(req, res) {
+router.post("/", asyncHandler(async function(req, res, next) {
     const validate = ajv.compile(textMsgSchema)
     const valid = validate(req.body)
     if (!valid) {
@@ -123,13 +123,8 @@ router.post("/", asyncHandler(async function(req, res) {
         })
     }
     
-    const { to, message, from, context } = req.body
-    let sendMessage = await waba.sendTextMessage(to, message, from, context)
-        .then(message => {
-            res.status(200).send({
-                data: message
-            })
-        })
+    let sendMessage = await waba.sendTextMessage(req, res, next)
+
 }));
 
 //Default 404 route

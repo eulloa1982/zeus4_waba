@@ -30,13 +30,12 @@ exports.sendTemplateMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAPQJdCoNI8iZCyfIPkkd2YlpNeO2Ht4gfbmizMOxqZCqwX3dhtkmrAM1xU3YZBnJh32KZCCOKDSBLXvvv4QUZCV5OB0eOF1BB6Kipr18BemZBWCtOcc2PCGAvseYg6qgDtXucf10TeXysSbFahSRNzqSaytPib9sBYiiPyMGUig2nDbZCxvV6zEZBKSoCNHcnS3e0ReKJggj',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
     })
     .then(response => {
-        console.log("Response backend data", response)
         res.status(200).send({
             data: response.data
         })
@@ -52,32 +51,36 @@ exports.sendTemplateMessage = async(req, res, next) => {
  * @param {object} context array(message_id: number) - if is a text reply message
  * 
 */
-exports.sendTextMessage = async(to, message, from, context = null) => {
+exports.sendTextMessage = async(req, res, next) => {
     // Default options are marked with *
     dataSend = {}
     dataSend.messaging_product = "whatsapp";
     dataSend.recipient_type = "individual";
-    dataSend.to = to;
+    dataSend.to = req.body.to;
     dataSend.type = "text";
-    dataSend.text = {'preview_url': false, 'body': message ? message : ''};
-    if (context)
-        dataSend.context = context;
+    dataSend.text = {'preview_url': false, 'body': req.body.message ? req.body.message : ''};
+    if (req.body.context)
+        dataSend.context = req.body.context;
+
+    console.log("Data to whatsapp", dataSend)
+
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v14.0/${from}/messages`, 
+                url: `https://graph.facebook.com/v14.0/${req.body.from}/messages`, 
                 //mode: 'cors', // no-cors, *cors, same-origin
                 //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAPQJdCoNI8iZCyfIPkkd2YlpNeO2Ht4gfbmizMOxqZCqwX3dhtkmrAM1xU3YZBnJh32KZCCOKDSBLXvvv4QUZCV5OB0eOF1BB6Kipr18BemZBWCtOcc2PCGAvseYg6qgDtXucf10TeXysSbFahSRNzqSaytPib9sBYiiPyMGUig2nDbZCxvV6zEZBKSoCNHcnS3e0ReKJggj',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
     })
-    .then(data => {
-        console.log('Data returned backend', data.data)
-        return (JSON.stringify(data.data))
+    .then(response => {
+        res.status(200).send({
+            data: response.data
+        })
     })
     
 };

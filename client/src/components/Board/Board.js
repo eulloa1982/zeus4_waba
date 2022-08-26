@@ -60,7 +60,15 @@ const BoardComponent = (props) => {
             
         if (message !== '') {
           if (messageRouter()) {
-            dispatch(addOwnMessage({to: props.mobile, message: message, from: props.wabaId, context: context}))
+            const data = {
+              to: props.mobile, message: message, from: props.wabaId         
+            }
+
+            if (!isEmpty(context))
+              data.context = context;
+            
+            
+            dispatch(addOwnMessage(data))
             setMessage('');
             setMsgReplyView(false);
             setContext({});

@@ -27,14 +27,23 @@ export function addOwnMessage(payloadSend) {
             body: JSON.stringify(payloadSend)
             
         };
+        console.log("Sending", payloadSend)
         return fetch("/textmessage", options)
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                console.log("Data cactched in fron end", response)
 
+                if (isObject(response.data)) {
+                    //all ok, get whatsapp id
+                    const message_id = response.data.messages[0].id;
+                    payloadSend.messageID = message_id
+                    payloadSend.status = 'success'
+                    payloadSend.replyTo = !isEmpty(payloadSend.context) ? payloadSend.context.message_id : ''
 
-                if (isObject(response.error) && !isEmpty(response.error)){
+                    console.log("Payload send", payloadSend)
+                    dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
+                }
+                else if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     payloadSend.error = response.error.message;
                     dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });

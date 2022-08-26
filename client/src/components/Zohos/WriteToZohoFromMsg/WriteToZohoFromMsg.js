@@ -18,7 +18,9 @@ function WriteToZohoFromMsg(props) {
       const data = {'Name': props.user, 'zeus4waba__Whatsapp_From': props.user, 
                 'zeus4waba__w': `${last_in_message.message}`, 
                 'zeus4waba__Whatsapp_Status': `${last_in_message.status}`,
-                'zeus4waba__Whatsapp_MessageID': `${last_in_message.messageID}`}
+                'zeus4waba__Whatsapp_MessageID': `${last_in_message.messageID}`,
+                'zeus4waba__ReplyTo': `${last_in_message.replyTo}`  
+              }
 
 
       ZOHO.CRM.API.insertRecord({Entity: 'zeus4waba__Whatsapps', APIData: data})

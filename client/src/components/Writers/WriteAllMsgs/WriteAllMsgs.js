@@ -36,7 +36,7 @@ const WriteAllMsgs = (props) => {
           <div class={msg.zeus4waba__Whatsapp_To !== null ? 'receiver' : 'sender'}>
             {msg.zeus4waba__ReplyTo !== null ? <div className={styles.receiverMessageReply}>{selectMessage(msg.zeus4waba__ReplyTo)}...</div> : '' }           <span class="receiver-message">{msg.zeus4waba__w} </span>
             <span className={styles.alignRight} onClick={() => dispatch(deleteAllMessages(msg.id))}><img src="./images/delete_message-2.jpg" alt="attach" /></span>
-            <span className={styles.alignRight} onClick={() => setParams(msg.id, msg.zeus4waba__w)} ><img src="./images/reply.png" alt="attach" /></span>
+            <span className={styles.alignRight} onClick={() => setParams(msg.zeus4waba__Whatsapp_MessageID, msg.zeus4waba__w)} ><img src="./images/reply.png" alt="attach" /></span>
                 { msg.zeus4waba__Whatsapp_Status === 'success' ? 
                 (
                   <span class="message-status"><img src="./images/double-check-seen.svg" alt="attach" /></span>
