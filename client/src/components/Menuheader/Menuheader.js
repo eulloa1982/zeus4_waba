@@ -7,7 +7,6 @@ const Menuheader = (props) => {
   const [visible, setVisible] = useState(false)
 
   const showDealForm = () => {
-    console.log(`Account ${props.usrAll.Account_Name.name}`)
     setVisible(true)
   } 
 
