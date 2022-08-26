@@ -1,12 +1,12 @@
 {
   "main.css": "/static/css/main.ebd190e1.chunk.css",
-  "main.js": "/static/js/main.63621528.chunk.js",
-  "main.js.map": "/static/js/main.63621528.chunk.js.map",
+  "main.js": "/static/js/main.279cbcb4.chunk.js",
+  "main.js.map": "/static/js/main.279cbcb4.chunk.js.map",
   "static/js/1.05b503be.chunk.js": "/static/js/1.05b503be.chunk.js",
   "static/js/1.05b503be.chunk.js.map": "/static/js/1.05b503be.chunk.js.map",
   "static/css/2.1c534fce.chunk.css": "/static/css/2.1c534fce.chunk.css",
-  "static/js/2.bbad2f6c.chunk.js": "/static/js/2.bbad2f6c.chunk.js",
-  "static/js/2.bbad2f6c.chunk.js.map": "/static/js/2.bbad2f6c.chunk.js.map",
+  "static/js/2.fe7b69cd.chunk.js": "/static/js/2.fe7b69cd.chunk.js",
+  "static/js/2.fe7b69cd.chunk.js.map": "/static/js/2.fe7b69cd.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.e74a177f.js",
   "runtime~main.js.map": "/static/js/runtime~main.e74a177f.js.map",
   "static/media/Menuheader.css": "/static/media/bg-chat.423f8970.png",
@@ -14,6 +14,6 @@
   "static/css/main.ebd190e1.chunk.css.map": "/static/css/main.ebd190e1.chunk.css.map",
   "static/css/2.1c534fce.chunk.css.map": "/static/css/2.1c534fce.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.64fddd13b8b8beefd370ee03611f1315.js": "/precache-manifest.64fddd13b8b8beefd370ee03611f1315.js",
+  "precache-manifest.4090041ee4206ebbcbcffff40e134e3c.js": "/precache-manifest.4090041ee4206ebbcbcffff40e134e3c.js",
   "service-worker.js": "/service-worker.js"
 }
