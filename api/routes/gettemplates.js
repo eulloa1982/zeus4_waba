@@ -22,16 +22,10 @@ const asyncHandler = fn => (req, res, next) => {
 //protect all other routes
 router.all("*", validateToken);
 
-/* 
-/wabaSend 
-send whatsapp message
-@from WhatsApp business number
-@to recipient
-@message text message
-*/
-router.get("/", asyncHandler(async function(req, res) {
 
-    let sendMessage = await waba.getMessagesTemplates()
+router.get("/", asyncHandler(async function(req, res) {
+    const {from} = req.body
+    let sendMessage = await waba.getMessagesTemplates(from)
         .then(message => {
             res.status(200).send({
                 data: message
