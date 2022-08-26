@@ -109,7 +109,7 @@ const BoardComponent = (props) => {
           <div class="chat-window">
             <WTemplate visible={showTextTemplateForm} wabaId={props.wabaId} />
             <WMediaTemplate visible={showMediaTemplateForm} />
-            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} />
+            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} wabaId={props.wabaId} />
             <Error />
             <WriteAllMsgs handlerReply={handleReplyMsg} /> 
             <ShowReplyMsg handlerVisibility={emptyShowReply} visible={showReplyMsgView} message={messageReply} />        

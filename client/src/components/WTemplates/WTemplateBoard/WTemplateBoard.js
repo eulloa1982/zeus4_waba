@@ -8,7 +8,7 @@ import WriteWTemplates from '../WriteWTemplates/WriteWTemplates';
 
 const WTemplateBoard = (props) => {
   const dispatch = useDispatch();
-  //para getTemplates(message)
+  //para getTemplates(props.wabaid)
 
   const rr = ['template1', 'template2', 'template3', 'template4'];
 

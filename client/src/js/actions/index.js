@@ -6,7 +6,14 @@ import { ERROR_IN,
         DELETE_ALL_MSG
     } from '../constants';
 
-//send a simple text message
+/**
+ * 
+ * @param {to, message, from, context} payloadSend 
+ * @to string (numeric)
+ * @message string
+ * @from string (numeric)
+ * @context object {message_id: number}
+ */
 export function addOwnMessage(payloadSend) {
     return dispatch => {
         const token = localStorage.getItem('jwtToken')
@@ -48,7 +55,16 @@ export function addOwnMessage(payloadSend) {
     }
 }
 
-/**sent whatsapp template to approve */
+
+/**
+ * 
+ * @param {template_name, language, category, template_text, from} payload 
+ * @template_name string (numeric)
+ * @language string
+ * @category string (OPT, MARKETING)
+ * @template_text string
+ * @from string (numeric)
+ */
 export function sendTemplate(payload) {
     return dispatch => {
         const token = localStorage.getItem('jwtToken')
@@ -104,7 +120,6 @@ export function getTemplates(payload) {
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                console.log("Response Get templates", response)
                 if (!isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                     //payload.error = response.error.message;

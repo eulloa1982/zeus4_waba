@@ -15,55 +15,47 @@ function App() {
   const [entity, getEntity] = React.useState('');
   const [mobile, getMobile] = React.useState('');
   const [mobileFromId, getWabaID] = React.useState(0);
-
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [error, setError] = React.useState(null);
   
   useEffect(() => {
     
     async function init() {
-
-        await ZOHO.embeddedApp.on("PageLoad",function(data) {
-          //Custom Bussiness logic goes here
-          let entity = data.Entity;
-          let recordID = data.EntityId;
-          getEntity(entity);
-          getUserId(recordID.toString())
-          // Set data we want from CRM into props
-          ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
-            .then((data) => { 
-              //window.myvar = data.data[0]['Mobile']
-              getMobile(data.data[0]['Mobile'])
-              setUsr(data.data[0]);
+      await ZOHO.embeddedApp.on("PageLoad",function(data) {
+        //Custom Bussiness logic goes here
+        let entity = data.Entity;
+        let recordID = data.EntityId;
+        getEntity(entity);
+        getUserId(recordID.toString())
+        // Set data we want from CRM into props
+        ZOHO.CRM.API.getRecord({Entity:entity,RecordID:recordID})
+          .then((data) => { 
+            getMobile(data.data[0]['Mobile'])
+            setUsr(data.data[0]);
               
-            })
-            .then(() => {
-              //select pre messages
-              ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
-                .then((dataMessage => {
-                  getAllMessages(dataMessage.data)
-                  setIsLoaded(true);
-                }))
-            })
-            
-            .catch((e) => console.log(e))
-    
-
-            ZOHO.CRM.API.getOrgVariable("zeus4waba__WhatsAppBFrom").then(function(data){
-              getWabaID(data.Success.Content);
-            });
           })
-
-          
-          
-          return await ZOHO.embeddedApp.init();
-
+          .then(() => {
+            //select pre messages
+            ZOHO.CRM.API.searchRecord({Entity: 'zeus4waba__Whatsapps', sort_order:"asc", Type:"criteria",Query:`(Name:equals:${recordID})`})
+              .then((dataMessage => {
+                getAllMessages(dataMessage.data)
+                setIsLoaded(true);
+              }))
+          })
+          .catch((e) => console.log(e))
+    
+          ZOHO.CRM.API.getOrgVariable("zeus4waba__WhatsAppBFrom")
+          .then(function(data){
+            getWabaID(data.Success.Content);
+          });
+        })
+       
+        return await ZOHO.embeddedApp.init();
       }
-
-
+    
     init();
-
-}, [])
+      
+}, [mobile])
 
 const ContentLoader = () =>{
   // handle rendering conditionally based on AJAX response
