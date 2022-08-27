@@ -38,6 +38,7 @@ const BoardComponent = (props) => {
             setMediaTplForm(true);
             break;
           case '/tplshow':
+            console.log("WabaId", props.wabaId)
             setAllTemplates(true);
             break;
           default:
@@ -61,7 +62,7 @@ const BoardComponent = (props) => {
         if (message !== '') {
           if (messageRouter()) {
             const data = {
-              to: props.mobile, message: message, from: props.wabaId         
+              to: props.mobile, message: message, from: props.whatsappId         
             }
 
             if (!isEmpty(context))
@@ -84,16 +85,17 @@ const BoardComponent = (props) => {
         //get template name from input /template template_name
         const input_name = message.split(" ")
         const template_name = input_name[1];
-        dispatch(sendTemplate({"to":props.mobile, "template_name": `${template_name}`, "language":"en_US", "from": props.wabaId}))
+        const template_language = input_name[2]
+        dispatch(sendTemplate({"to":props.mobile, "template_name": `${template_name}`, "language":`${template_language}`, "from": props.whatsappId}))
         return false;
       }
       return true;
     }
 
 
-    const handleTemplate = (tmp) => {
+    const handleTemplate = (tmp, language) => {
       setTemplateBoard(tmp)
-      setMessage(`/template ${tmp}`)
+      setMessage(`/template ${tmp} ${language}`)
       setAllTemplates(false)
     }
   
@@ -117,9 +119,9 @@ const BoardComponent = (props) => {
     return (
         <div id='columna2' class="main">
           <div class="chat-window">
+            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} wabaId={props.wabaId} />
             <WTemplate visible={showTextTemplateForm} wabaId={props.wabaId} />
             <WMediaTemplate visible={showMediaTemplateForm} />
-            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} wabaId={props.wabaId} />
             <Error />
             <WriteAllMsgs handlerReply={handleReplyMsg} /> 
             <ShowReplyMsg handlerVisibility={emptyShowReply} visible={showReplyMsgView} message={messageReply} />        
@@ -145,3 +147,4 @@ const BoardComponent = (props) => {
 }
 
 export default BoardComponent
+//            <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} wabaId={props.wabaId} />

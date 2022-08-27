@@ -37,12 +37,12 @@ const textTemplateSchema = {
             description: "Template text",
             minLength: 1
         },
-        from: {
+        waba_id: {
             type: "string",
             description: "WABA ID number"
         }
     },
-    required: ["template_name", "language", "category", "template_text", "from"],
+    required: ["template_name", "category", "template_text", "waba_id"],
     additionalProperties: false,
 };
 
@@ -77,12 +77,7 @@ router.post("/", asyncHandler(async function(req, res) {
     }
 
     const { template_name, language, category, template_text, from } = req.body
-    let sendMessage = await waba.createTextTemplate(template_name, language, category, template_text, from)
-        .then(message => {
-            res.status(200).send({
-                error: {'message': validate.errors[0].message},
-            })
-        })
+    let sendMessage = await waba.createTextTemplate(req, res)
 }));
 
 //Default 404 route

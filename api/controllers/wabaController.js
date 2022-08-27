@@ -30,7 +30,7 @@ exports.sendTemplateMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPQJdCoNI8iZCyfIPkkd2YlpNeO2Ht4gfbmizMOxqZCqwX3dhtkmrAM1xU3YZBnJh32KZCCOKDSBLXvvv4QUZCV5OB0eOF1BB6Kipr18BemZBWCtOcc2PCGAvseYg6qgDtXucf10TeXysSbFahSRNzqSaytPib9sBYiiPyMGUig2nDbZCxvV6zEZBKSoCNHcnS3e0ReKJggj',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -72,7 +72,7 @@ exports.sendTextMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAPQJdCoNI8iZCyfIPkkd2YlpNeO2Ht4gfbmizMOxqZCqwX3dhtkmrAM1xU3YZBnJh32KZCCOKDSBLXvvv4QUZCV5OB0eOF1BB6Kipr18BemZBWCtOcc2PCGAvseYg6qgDtXucf10TeXysSbFahSRNzqSaytPib9sBYiiPyMGUig2nDbZCxvV6zEZBKSoCNHcnS3e0ReKJggj',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -81,27 +81,6 @@ exports.sendTextMessage = async(req, res, next) => {
         res.status(200).send({
             data: response.data
         })
-    })
-    
-};
-
-/**
- * Get WhatsApp templates
- * @param {string} from numeric waba id 
- */
-exports.getMessagesTemplates = async(from) => {
-    const response = await axios({
-                method: 'GET', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/${from}/message_templates`, 
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
-                },
-    })
-    .then(data => {
-        console.log(data)
-        //return (JSON.stringify(data))
     })
     
 };
@@ -115,22 +94,50 @@ exports.getMessagesTemplates = async(from) => {
  * @param {string} template_text 
  * @param {string} waba_id (numeric)
  */
-exports.createTextTemplate = async(template_name, language, category, template_text, waba_id) => {
+ exports.createTextTemplate = async(req, res) => {
     // Default options are marked with *
-    dataSend = { "name": template_name, "language": language, "category": category, "components": [{ "type": "BODY", "text": template_text }] };
+    dataSend = { "name": req.body.template_name, "language": req.body.language, "category": req.body.category, "components": [{ "type": "BODY", "text": req.body.template_text }] };
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
-                url: `https://graph.facebook.com/v12.0/${waba_id}/message_templates`, 
+                url: `https://graph.facebook.com/v12.0/${req.body.waba_id}/message_templates`, 
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BANxwAhDqC1KhpkDU6p3x9sxvbpua6QYTv7GCDWwHLCLT2H7AuRyQd47sShnNZBNr8J5SWMqh1zf2a0pqOZBh4ALDX0qWKGDUmepII6I8s829ZCU7aruqHEZAilS6pqX1w6XlQfkbnirHkFW6yeQ7iiXmSt7lrgUGATu45ZASpe8VfVeP6pbgFZC5KdrYL3k4p7AuXtibFKd3qhIZAZBURG4ZD',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
                 },
                 data: JSON.stringify(dataSend)
     })
-    .then(data => {
-        return (JSON.stringify(dataSend))
+    .then(response => {
+        res.status(200).send({
+            data: response.data
+        })
     })
     
 };
+
+
+
+
+/**
+ * Get WhatsApp templates
+ * @param {string} from numeric waba id 
+ */
+exports.getMessagesTemplates = async(req, res) => {
+    const response = await axios({
+                method: 'GET', // *GET, POST, PUT, DELETE, etc. 100698539410392
+                url: `https://graph.facebook.com/v14.0/${req.body.from}/message_templates`, 
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
+                },
+    })
+    .then(response => {
+        res.status(200).send({
+            data: response.data
+        })
+    })
+    
+};
+
 

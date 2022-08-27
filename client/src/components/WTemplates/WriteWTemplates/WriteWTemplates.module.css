@@ -1,1 +1,8 @@
-.WriteWTemplates {}
+.WriteWTemplates {
+    height: 400px;
+    width: 615px;
+        overflow: auto;
+        float: left;
+        position: relative;
+        margin-left: -5px;
+}

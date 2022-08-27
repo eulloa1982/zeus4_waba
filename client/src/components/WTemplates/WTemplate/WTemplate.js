@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
-import {sendTemplate} from '../../../js/actions/index';
+import {createTemplate} from '../../../js/actions/index';
 import './WTemplate.css';
 
 const WTemplate = (props) => {
@@ -27,11 +27,10 @@ const WTemplate = (props) => {
       language: data.language,
       category: data.category,
       template_text: data.message_text,
-      from: props.wabaId
+      waba_id: props.wabaId
 
     }
-
-    dispatch(sendTemplate({ ...object}))
+    dispatch(createTemplate({ ...object}))
 
   }
 

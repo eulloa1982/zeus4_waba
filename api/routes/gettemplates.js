@@ -23,14 +23,8 @@ const asyncHandler = fn => (req, res, next) => {
 router.all("*", validateToken);
 
 
-router.get("/", asyncHandler(async function(req, res) {
-    const {from} = req.body
-    let sendMessage = await waba.getMessagesTemplates(from)
-        .then(message => {
-            res.status(200).send({
-                data: message
-            })
-        })
+router.post("/", asyncHandler(async function(req, res) {
+    let sendMessage = await waba.getMessagesTemplates(req, res)
 }));
 
 

@@ -40,7 +40,6 @@ export function addOwnMessage(payloadSend) {
                     payloadSend.status = 'success'
                     payloadSend.replyTo = !isEmpty(payloadSend.context) ? payloadSend.context.message_id : ''
 
-                    console.log("Payload send", payloadSend)
                     dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 }
                 else if (isObject(response.error) && !isEmpty(response.error)){
@@ -88,7 +87,7 @@ export function sendTemplate(payload) {
                     payload.messageID = message_id
                     payload.message = `Template message: ${payload.template_name}`
                     payload.status = 'success'
-                    console.log("Payload", payload)
+                    payload.replyTo = !isEmpty(payload.context) ? payload.context.message_id : ''
                     dispatch({ type: OWN_MESSAGE_OUT, payload: payload });
                 }
                 else if (isObject(response.error) && !isEmpty(response.error)){
@@ -137,7 +136,11 @@ export function createTemplate(payload) {
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
-                if (isObject(response.error) && !isEmpty(response.error)){
+                if (isObject(response.data)) {
+                    //all ok, get whatsapp id
+                    const message_id = response.data.id;
+                    dispatch({ type: ERROR_IN, payload: `Template ${message_id} waiting for approving` });
+                } else if (isObject(response.error) && !isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
                 } else if (isObject(response.errors)){
                     dispatch({type: ERROR_IN, payload: response.errors.message});                    
@@ -158,12 +161,12 @@ export function createTemplate(payload) {
  * 
  * @param {object} payload {from: waba-id-number}
  * @returns 
- */
+ *
 export function getTemplates(payload) {
-    return dispatch => {
+    //return dispatch => {
         const token = localStorage.getItem('jwtToken')
         const options = {
-            method: `GET`,
+            method: `POST`,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -177,22 +180,24 @@ export function getTemplates(payload) {
             .then(res => res.json())
             .then(json => {
                 let response = {...json}
+                console.log(response)
                 if (!isEmpty(response.error)){
-                    dispatch({type: ERROR_IN, payload: response.error.message});
+                    //dispatch({type: ERROR_IN, payload: response.error.message});
                     //payload.error = response.error.message;
                     //dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 } else if (isObject(response.errors)){
-                    dispatch({type: ERROR_IN, payload: response.errors.message});                    
+                    //dispatch({type: ERROR_IN, payload: response.errors.message});                    
                 } else {
                     //dispatch({ type: OWN_MESSAGE_OUT, payload: payloadSend });
                 }
                 
             })
             .catch(err => {
-                dispatch({type: ERROR_IN, payload: 'An unknown error occurred when trying to retrieve WhatsApp Templates'});
+                console.log(err)
+                //dispatch({type: ERROR_IN, payload: 'An unknown error occurred when trying to retrieve WhatsApp Templates'});
             })
-    }
-}
+    //}
+}*/
 
 
 export function addAllMessages(payload) {
