@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { addOwnMessage, sendTemplate } from '../../js/actions/index'
 import { errorsIn } from "../../js/actions/errors";
@@ -12,8 +12,10 @@ import WTemplateBoard from "../WTemplates/WTemplateBoard/WTemplateBoard";
 import ShowReplyMsg from "../ShowReplyMsg/ShowReplyMsg";
 
 const BoardComponent = (props) => {
-    const messages_in = useSelector(store => store.messages_in);
+    const messages_in = useSelector(store => store.all_messages);
     const dispatch = useDispatch();
+
+    const messagesEndRef = useRef(null)
 
     const [message, setMessage] = React.useState('');
     const [messageReply, setMessageReply] = React.useState('');
@@ -23,7 +25,6 @@ const BoardComponent = (props) => {
     const [showAllTemplates, setAllTemplates] = React.useState(false);
     const [context, setContext] = React.useState({});
     const [showReplyMsgView, setMsgReplyView] = React.useState(false);
-    const [template_board, setTemplateBoard] = React.useState('');
 
     const handleMessage = (event) => {
         setMessage(event.target.value )
@@ -54,6 +55,7 @@ const BoardComponent = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        
         if (isEmpty(props.mobile)) {
             dispatch(errorsIn("No mobile detected in this contact"))
             return
@@ -74,10 +76,10 @@ const BoardComponent = (props) => {
             setMsgReplyView(false);
             setContext({});
             setMessageReply('');
-
           }
         }
     }
+
 
 
     const messageRouter = () => {
@@ -93,7 +95,6 @@ const BoardComponent = (props) => {
           "from": props.whatsappId
         }
 
-
         const parameters = input_name[3]
         if (parameters) {
           template_message.components = [{ "type": "body"}]
@@ -107,30 +108,36 @@ const BoardComponent = (props) => {
           //parameters.map
         }
 
-        console.log(template_message)
         dispatch(sendTemplate(template_message))
         return false;
       }
       return true;
     }
 
-
+    /**
+     * callback function
+     * receive params from child
+     * @param {string} tmp 
+     * @param {string} language 
+     * @param {string} message 
+     */
     const handleTemplate = (tmp, language, message) => {
-      setTemplateBoard(tmp)
       let messageText = `/template ${tmp} ${language}`;
       //find parameters
       const extract_parameters = checkForParameters(message, '{{')
       if (extract_parameters && extract_parameters !== null) {
         messageText += ` ${extract_parameters}`
-        //messageText += ` ${extract_parameters}`.substring(0, extract_parameters.length - 1);
       }
       setMessage(`${messageText}`)
       setAllTemplates(false)
     }
 
-
-    
-
+    /**
+     * 
+     * @param {string} cadena string source
+     * @param {string} parameter string to search
+     * @returns string with parameters (param1, param2, ..., paramx)
+     */
     const checkForParameters = (cadena, parameter) => {
       const strArr = cadena.split(" ");
       const res = [];
@@ -160,16 +167,25 @@ const BoardComponent = (props) => {
       setMsgReplyView(true)
     }
 
+  
+    /***scroll to bottom , aun no funciona como se requiere */
+    const scrollToBottom = () => {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+    useEffect(scrollToBottom);
+
 
     return (
         <div id='columna2' class="main">
-          <div class="chat-window">
+          <div class="chat-window" id="chat-window">
             <WTemplateBoard handlerTemp={handleTemplate} visible={showAllTemplates} wabaId={props.wabaId} />
             <WTemplate visible={showTextTemplateForm} wabaId={props.wabaId} />
             <WMediaTemplate visible={showMediaTemplateForm} />
             <Error />
             <WriteAllMsgs handlerReply={handleReplyMsg} /> 
             <ShowReplyMsg handlerVisibility={emptyShowReply} visible={showReplyMsgView} message={messageReply} />        
+            <div ref={messagesEndRef} />
+
           </div>
           
           <div class="type-message-bar">
