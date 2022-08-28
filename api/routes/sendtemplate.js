@@ -35,6 +35,9 @@ const templateTextMsgSchema = {
         type: "string",
         minLength: 1, 
         description: "language"
+      },
+      components: {
+        type: "array"
       }
     },
     required: ["to", "template_name", "from", "language"],

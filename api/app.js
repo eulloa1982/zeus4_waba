@@ -59,9 +59,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // send back an easily understandable error message to the caller
-  //console.log('Backend Error', err.response.data.error.message)
+  //console.log('Backend Error', err)
   //if (err.response.data instanceof Object)
-    res.status(500).send(err.response.data)
+  res.status(500).send(err.response.data)
   //else
     //res.status(500).send(err.data)
   //res.render('error');

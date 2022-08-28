@@ -1,26 +1,26 @@
 const { nextTick } = require("process");
 const axios = require("axios");
 
-// Send WhatsApp Template Message
-// hello_world
+/**
+ * Send a text template message
+ * @param {http} req body (to, template_name, language, from, components)
+ * Example body
+ * { "to": "34637070653", "template_name": "second_template_wabazeus","language": "es_ES", "from": "100698539410392", "components": [{ "type": "body", "parameters": [{ "type": "text", "text": "Steve"}, {"type": "text", "text": "Our"}, {"type": "text", "text": "Bye"}]}],}
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.sendTemplateMessage = async(req, res, next) => {
-    
+    let components = {}
     // Default options are marked with *
     dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
             "to": req.body.to, "type": 'template', 
             "template": { "name": `${req.body.template_name}`, "language": { "code": `${req.body.language}` } }
     }
-   
-    /* dataSend = { "messaging_product": "whatsapp", "recipient_type": "individual", 
-                "to": to, "type": "template", 
-                "template": { "name": `${template_name}`, "language": { "code": `${language}` } },
-                "components": [{ "type": "body",
-                                "parameters": [
-                                    {"type": "text", "text": "text-string"},  
-                                    {"type": "currency", "currency": {"fallback_value": "$100.99", "code": "USD", "amount_1000": 100990 }}
-                                ]
-                            }]
-            };*/
+
+    if(req.body.components) {
+        dataSend.template.components = []
+        dataSend.template.components.push(...req.body.components)
+    }
 
     const response = await axios({
                 method: 'POST', // *GET, POST, PUT, DELETE, etc. 100698539410392
@@ -30,7 +30,7 @@ exports.sendTemplateMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -44,13 +44,15 @@ exports.sendTemplateMessage = async(req, res, next) => {
 };
 
 /**
- * send a normal whatsapp text message 
- * @param {string} to number destination
- * @param {string} message text message
- * @param {string} from WABA Number ID
- * @param {object} context array(message_id: number) - if is a text reply message
  * 
-*/
+ * @param {http} req body (to, message, from, context)
+ *  * @param {string} to number destination
+ *  * @param {string} message text message
+ *  * @param {string} from WABA Number ID
+ *  * @param {object} context array(message_id: number) - if is a text reply message
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.sendTextMessage = async(req, res, next) => {
     // Default options are marked with *
     dataSend = {}
@@ -72,7 +74,7 @@ exports.sendTextMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -87,12 +89,14 @@ exports.sendTextMessage = async(req, res, next) => {
 
 
 /**
- * Create WhatsApp Text Template
- * @param {string} template_name 
- * @param {string} language 
- * @param {string} category 
- * @param {string} template_text 
- * @param {string} waba_id (numeric)
+ * Create a text template
+ * @param {http} req 
+ *  * @param {string} template_name 
+ *  * @param {string} language 
+ *  * @param {string} category 
+ *  * @param {string} template_text 
+ *  * @param {string} waba_id (numeric)
+ * @param {*} res 
  */
  exports.createTextTemplate = async(req, res) => {
     // Default options are marked with *
@@ -103,7 +107,7 @@ exports.sendTextMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
                 },
                 data: JSON.stringify(dataSend)
     })
@@ -117,10 +121,11 @@ exports.sendTextMessage = async(req, res, next) => {
 
 
 
-
 /**
- * Get WhatsApp templates
- * @param {string} from numeric waba id 
+ * Get WhatsApp Templates
+ * @param {http} req ]
+ *  * @param {string} from numeric waba id 
+ * @param {*} res 
  */
 exports.getMessagesTemplates = async(req, res) => {
     const response = await axios({
@@ -129,7 +134,7 @@ exports.getMessagesTemplates = async(req, res) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIvGVj5UEdw1k21L7UAdEno6IZBMpGpAvOLZCrjbjGZC65wQ77Dd6HU9c1cDIx2ZBZCg8UZC8qT0ZAklEFBtX0QZByzmVEzC8xOS9TLqBpWsVXvLrqqFtmZBw3eFfrKp8uAcjMZBSuNka4NA20nQlZAEnjPkTQGU38m2HJZCrn236Ph5OQMr5krsZCjp9spHsOIlJWAAcfHB4CYZBX',
+                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
                 },
     })
     .then(response => {

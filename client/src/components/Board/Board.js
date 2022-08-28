@@ -85,19 +85,64 @@ const BoardComponent = (props) => {
         //get template name from input /template template_name
         const input_name = message.split(" ")
         const template_name = input_name[1];
-        const template_language = input_name[2]
-        dispatch(sendTemplate({"to":props.mobile, "template_name": `${template_name}`, "language":`${template_language}`, "from": props.whatsappId}))
+        const template_language = input_name[2];
+        let template_message = {
+          "to":props.mobile, 
+          "template_name": `${template_name}`, 
+          "language":`${template_language}`, 
+          "from": props.whatsappId
+        }
+
+
+        const parameters = input_name[3]
+        if (parameters) {
+          template_message.components = [{ "type": "body"}]
+          template_message.components[0]['parameters'] = [];
+          const parameters_texts = parameters.split(",");
+          let arr = []
+          parameters_texts.map(function(k, v) {
+            template_message.components[0]['parameters'].push({"type": "text", "text": `${k}`})
+          })
+          //Object.assign(template_message.components.parameters, arr)
+          //parameters.map
+        }
+
+        console.log(template_message)
+        dispatch(sendTemplate(template_message))
         return false;
       }
       return true;
     }
 
 
-    const handleTemplate = (tmp, language) => {
+    const handleTemplate = (tmp, language, message) => {
       setTemplateBoard(tmp)
-      setMessage(`/template ${tmp} ${language}`)
+      let messageText = `/template ${tmp} ${language}`;
+      //find parameters
+      const extract_parameters = checkForParameters(message, '{{')
+      if (extract_parameters && extract_parameters !== null) {
+        messageText += ` ${extract_parameters}`
+        //messageText += ` ${extract_parameters}`.substring(0, extract_parameters.length - 1);
+      }
+      setMessage(`${messageText}`)
       setAllTemplates(false)
     }
+
+
+    
+
+    const checkForParameters = (cadena, parameter) => {
+      const strArr = cadena.split(" ");
+      const res = [];
+      for(let i = 0; i < strArr.length; i++){
+          console.log(strArr[i])
+            if(strArr[i].includes(`${parameter}`)){
+                res.push(`param`);
+            };
+      };
+      return res.join(",");
+
+   }
   
     //Ver como sustituir esto
     //empty reply state when child says
