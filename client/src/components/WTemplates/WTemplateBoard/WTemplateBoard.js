@@ -34,7 +34,7 @@ const WTemplateBoard = (props) => {
             .then(json => {
                 let response = {...json}
                 if (isObject(response.data)) {
-                  //all ok, get whatsapp id
+                  //all ok
                   setRr(response.data.data)
                 } else if (!isEmpty(response.error)){
                     dispatch({type: ERROR_IN, payload: response.error.message});
@@ -54,13 +54,12 @@ const WTemplateBoard = (props) => {
   }
 
   // Handler
-  const handler = (template, language) => {
-    props.handlerTemp(template, language)
+  const handler = (template, language, message) => {
+    props.handlerTemp(template, language, message)
   }
 
   return (
     <div>
-      {getTemplates}
       {props.visible ? 
         <div class="superior-text animate__animated animate__bounceInRight">
             <h3>Template Board</h3>
@@ -77,4 +76,3 @@ const WTemplateBoard = (props) => {
 }
 
 export default WTemplateBoard;
-//              <WriteWTemplates handler={handler} templates={rr}/>

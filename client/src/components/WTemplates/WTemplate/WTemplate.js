@@ -54,6 +54,7 @@ const WTemplate = (props) => {
                 <select name="language" class="form-control" onChange={handleInputChange}>
                   <option selected>Choose...</option>
                   <option value='en_US'>US</option>
+                  <option value='es_ES'>ES</option>
                 </select>    
               </div>
               <div class="form-group col-md-6">
