@@ -14,7 +14,6 @@ import ShowReplyMsg from "../ShowReplyMsg/ShowReplyMsg";
 const BoardComponent = (props) => {
     const messages_in = useSelector(store => store.all_messages);
     const dispatch = useDispatch();
-
     const messagesEndRef = useRef(null)
 
     const [message, setMessage] = React.useState('');
@@ -76,6 +75,7 @@ const BoardComponent = (props) => {
             setMsgReplyView(false);
             setContext({});
             setMessageReply('');
+            //setInputFocus();
           }
         }
     }
@@ -142,10 +142,9 @@ const BoardComponent = (props) => {
       const strArr = cadena.split(" ");
       const res = [];
       for(let i = 0; i < strArr.length; i++){
-          console.log(strArr[i])
-            if(strArr[i].includes(`${parameter}`)){
-                res.push(`param`);
-            };
+        if(strArr[i].includes(`${parameter}`)){
+          res.push(`param`);
+        };
       };
       return res.join(",");
 
@@ -158,6 +157,12 @@ const BoardComponent = (props) => {
       setMessageReply('');
       setMsgReplyView(false)
     }
+
+    /*const toggleShowReply = () => {
+      setContext({});
+      setMessageReply(prev => !prev)
+      setMsgReplyView(prev => !prev)
+    }*/
 
     //writeallmsg callback function
     //set the id of msg to reply
@@ -174,6 +179,7 @@ const BoardComponent = (props) => {
     }
     useEffect(scrollToBottom);
 
+   
 
     return (
         <div id='columna2' class="main">

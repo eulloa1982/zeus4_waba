@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addAllMessages } from '../../../js/actions/index'
 import { orderBy } from 'lodash';
@@ -10,5 +11,5 @@ const LoadAllMsgs = (props) => {
   dispatch(addAllMessages(data));
 }
 
-export default LoadAllMsgs;
+export default React.memo(LoadAllMsgs);
 
