@@ -21,13 +21,17 @@ const asyncHandler = fn => (req, res, next) => {
 
 //protect all other routes
 //router.all("*", validateToken);
+router.get("/", function(req, res, next) {
+    res.send("API is working properly");
+});
 
 
-router.post("/", asyncHandler(async function(req, res) {
+
+router.post("/", function(req, res) {
+    console.log("zeuswaba")
     res.status(200).send({
-        data: JSON.stringify(req)
-    })
-}));
+        data: req.body   })
+});
 
 
 module.exports = router;
