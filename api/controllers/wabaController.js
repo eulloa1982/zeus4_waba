@@ -30,7 +30,7 @@ exports.sendTemplateMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
+                    Authorization: 'Bearer EAAFcYhQbgP8BACFZCDc7xZA8qmANzzsOztcFFJFFwE2ZAaF5FdDFm3UG0KadCJhg88C1GcOE9E1eTlMZCvI2Gh75yovQHe9mkg94dhAHva4V9uQzZAEjr0oPXVF44bUhaDKQKkznNHFazfZBh94sF9evWQNxQMlmIVUQwzpitbCPcszWH5fQuQGS6bIiXAAxOo9rLrYLvCvQwTVMcZCIJbOoz1NiYswGAEZD',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -74,7 +74,7 @@ exports.sendTextMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
+                    Authorization: 'Bearer EAAFcYhQbgP8BACFZCDc7xZA8qmANzzsOztcFFJFFwE2ZAaF5FdDFm3UG0KadCJhg88C1GcOE9E1eTlMZCvI2Gh75yovQHe9mkg94dhAHva4V9uQzZAEjr0oPXVF44bUhaDKQKkznNHFazfZBh94sF9evWQNxQMlmIVUQwzpitbCPcszWH5fQuQGS6bIiXAAxOo9rLrYLvCvQwTVMcZCIJbOoz1NiYswGAEZD',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 data: JSON.stringify(dataSend)
@@ -107,7 +107,7 @@ exports.sendTextMessage = async(req, res, next) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
+                    Authorization: 'Bearer EAAFcYhQbgP8BACFZCDc7xZA8qmANzzsOztcFFJFFwE2ZAaF5FdDFm3UG0KadCJhg88C1GcOE9E1eTlMZCvI2Gh75yovQHe9mkg94dhAHva4V9uQzZAEjr0oPXVF44bUhaDKQKkznNHFazfZBh94sF9evWQNxQMlmIVUQwzpitbCPcszWH5fQuQGS6bIiXAAxOo9rLrYLvCvQwTVMcZCIJbOoz1NiYswGAEZD',
                 },
                 data: JSON.stringify(dataSend)
     })
@@ -134,7 +134,7 @@ exports.getMessagesTemplates = async(req, res) => {
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer EAAFcYhQbgP8BAIeXOR556P5yj4NoluMwSf2BZCIjfcZAHB5r6YXH4M5MyYxLmOoiipBkrXDMVzLLeTWo0iuvJwdoxHirImjdEhvxbNEoT5Wnl5znWdcTs1CIobjHjZCZCoTucuFIxJqZA2xbt0hbjrW60nuxcqDeur600s6Ca8SuAlmGfGyf4jOjakaHNSeqZBi2DC6AezZCPxn2BbkZBXi5',
+                    Authorization: 'Bearer EAAFcYhQbgP8BACFZCDc7xZA8qmANzzsOztcFFJFFwE2ZAaF5FdDFm3UG0KadCJhg88C1GcOE9E1eTlMZCvI2Gh75yovQHe9mkg94dhAHva4V9uQzZAEjr0oPXVF44bUhaDKQKkznNHFazfZBh94sF9evWQNxQMlmIVUQwzpitbCPcszWH5fQuQGS6bIiXAAxOo9rLrYLvCvQwTVMcZCIJbOoz1NiYswGAEZD',
                 },
     })
     .then(response => {

@@ -11,6 +11,8 @@ var sendTemplate = require("./routes/sendtemplate");
 var createTemplate = require("./routes/createtemplate");
 var getTemplates = require("./routes/gettemplates");
 var textMessage = require("./routes/textmessage");
+var zeusWaba = require("./routes/zeuswaba");
+
 const { isObject } = require('util');
 
 var app = express();
@@ -34,6 +36,8 @@ app.use("/sendtemplate", sendTemplate);
 app.use("/createtemplate", createTemplate);
 app.use("/gettemplates", getTemplates);
 app.use("/textmessage", textMessage);
+app.use("/zeuswaba", zeusWaba);
+
 
 //app.use("/token", tokenRouter);
 
