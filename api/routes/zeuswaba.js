@@ -22,7 +22,7 @@ const asyncHandler = fn => (req, res, next) => {
 //protect all other routes
 //router.all("*", validateToken);
 router.get("/", function(req, res, next) {
-    res.send("API is working properly").status(200);
+    res.status(200);
 });
 
 
