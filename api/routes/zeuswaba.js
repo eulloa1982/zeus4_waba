@@ -20,7 +20,7 @@ const asyncHandler = fn => (req, res, next) => {
 };
 
 //protect all other routes
-router.all("*", validateToken);
+//router.all("*", validateToken);
 
 
 router.post("/", asyncHandler(async function(req, res) {
