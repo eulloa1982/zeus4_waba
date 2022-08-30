@@ -24,9 +24,14 @@ const asyncHandler = fn => (req, res, next) => {
 //protect all other routes
 //router.all("*", validateToken);
 router.get("/", function(req, res, next) {
-    res.status(200).send({
-        data: req.query['hub.challenge']
-    });
+    if (
+        req.query['hub.mode'] == 'subscribe' &&
+        req.query['hub.verify_token'] == token
+      ) {
+        res.send(req.query['hub.challenge']);
+      } else {
+        res.sendStatus(400);
+      }
 });
 
 
