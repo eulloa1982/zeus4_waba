@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const { validateToken } = require("../middlewares/validateToken");
 const bcrypt = require('bcrypt')
 const saltRounds = 10 //required by bcrypt
+const url = require('url');
+const querystring = require('querystring');
 
 
 const passwordHash = '$2b$10$ET29p5cc4nAGsfVkPNrFQ.4ZhyUAQitnKGRkoXdqWmpQsUlJnsJXu'
@@ -22,7 +24,9 @@ const asyncHandler = fn => (req, res, next) => {
 //protect all other routes
 //router.all("*", validateToken);
 router.get("/", function(req, res, next) {
-    res.status(200);
+    res.status(200).send({
+        data: req.query['hub.challenge']
+    });
 });
 
 
