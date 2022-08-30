@@ -12,6 +12,7 @@ var createTemplate = require("./routes/createtemplate");
 var getTemplates = require("./routes/gettemplates");
 var textMessage = require("./routes/textmessage");
 var zeusWaba = require("./routes/zeuswaba");
+var zeusNotifications = require("./routes/zeusnotifications");
 
 const { isObject } = require('util');
 
@@ -37,6 +38,7 @@ app.use("/createtemplate", createTemplate);
 app.use("/gettemplates", getTemplates);
 app.use("/textmessage", textMessage);
 app.use("/zeuswaba", zeusWaba);
+app.use("/zeusnotifications", zeusNotifications);
 
 
 //app.use("/token", tokenRouter);
@@ -63,7 +65,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // send back an easily understandable error message to the caller
-  //console.log('Backend Error', err)
+  console.log('Backend Error', err)
   //if (err.response.data instanceof Object)
   res.status(500).send(err.response.data)
   //else
