@@ -26,7 +26,7 @@ const asyncHandler = fn => (req, res, next) => {
 router.get("/", function(req, res, next) {
     if (
         req.query['hub.mode'] == 'subscribe' &&
-        req.query['hub.verify_token'] == token
+        req.query['hub.verify_token'] === 'testing'
       ) {
         res.send(req.query['hub.challenge']);
       } else {
